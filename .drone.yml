@@ -19,7 +19,7 @@ steps:
       exclude: []
   volumes:
   - name: temp
-    path: /go
+    path: /webapp
   - name: host
     path: /var/run/docker.sock
 - name: master_build
@@ -36,26 +36,26 @@ steps:
       exclude: []
   volumes:
   - name: temp
-    path: /go
+    path: /webapp
   - name: host
     path: /var/run/docker.sock
-# - name: master_ship
-#   image: registry.cn-hangzhou.aliyuncs.com/profzone/golang-onship:1.14
-#   pull: always
-#   commands:
-#   - eden ci ship --push
-#   environment:
-#     GOENV: PROD
-#   when:
-#     branch:
-#       include:
-#       - master
-#       exclude: []
-#   volumes:
-#   - name: temp
-#     path: /go
-#   - name: host
-#     path: /var/run/docker.sock
+- name: master_ship
+  image: docker:19.03.12
+  pull: always
+  commands:
+  - docker build -t registry.cn-hangzhou.aliyuncs.com/w2wing/cmop-webapp:latest .
+  environment:
+    GOENV: PROD
+  when:
+    branch:
+      include:
+      - master
+      exclude: []
+  volumes:
+  - name: temp
+    path: /webapp
+  - name: host
+    path: /var/run/docker.sock
 # - name: master_deploy
 #   image: registry.cn-hangzhou.aliyuncs.com/profzone/golang-ondeploy:2.4.3
 #   pull: always
