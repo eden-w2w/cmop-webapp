@@ -1,7 +1,7 @@
 import { uniqueId } from 'lodash'
 import menuProduction from './modules/menu_production'
 import menuSales from './modules/menu_sales'
-import menuChannels from './modules/menu_channels'
+import menuCustomers from './modules/menu_customers'
 import menuSettings from './modules/menu_settings'
 
 /**
@@ -23,13 +23,13 @@ export const menuHeader = supplementPath([
     { path: '/index', title: '首页', icon: 'home' },
     menuProduction,
     menuSales,
-    menuChannels,
+    menuCustomers,
     menuSettings
 ])
 
 export const menuAside = supplementPath([
     menuProduction,
     menuSales,
-    menuChannels,
+    menuCustomers,
     menuSettings
 ])

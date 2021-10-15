@@ -1,16 +1,19 @@
 <template>
     <d2-container>
-        <template slot="header">{{ goods.name }}</template>
-        <el-descriptions column="1" border>
-            <template slot="extra">
-                <el-button
-                    type="primary"
-                    size="small"
-                    v-on:click="onUpdateClick"
-                    :disabled="btnEnabled"
-                    >编辑</el-button
-                >
-            </template>
+        <template slot="header">
+            <el-row type="flex" justify="space-between" align="middle">
+                <el-col :span="3">{{ goods.name }}</el-col>
+                <el-col :span="3" style="text-align: right">
+                    <el-button
+                        type="primary"
+                        :disabled="btnDisabled"
+                        @click="onUpdateClick"
+                        >编辑商品</el-button
+                    >
+                </el-col>
+            </el-row>
+        </template>
+        <el-descriptions :column="1" border>
             <el-descriptions-item label="描述">{{
                 goods.comment
             }}</el-descriptions-item>

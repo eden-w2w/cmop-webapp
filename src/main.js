@@ -12,11 +12,8 @@ import router from './router'
 import { menuHeader, menuAside } from '@/menu'
 import { frameInRoutes } from '@/router/routes'
 
-import VueUeditorWrap from 'vue-ueditor-wrap'
-
 // 核心插件
 Vue.use(d2Admin)
-Vue.component('VueUeditorWrap', VueUeditorWrap)
 
 new Vue({
   router,

@@ -19,7 +19,7 @@ export default {
                 title: '管理员设置',
                 auth: true
             },
-            component: _import('productions/list')
+            component: _import('settings/admins')
         }
     ]
 }

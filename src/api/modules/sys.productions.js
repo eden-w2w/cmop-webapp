@@ -16,5 +16,19 @@ export default {
         } catch (err) {
             console.log('[modules][productions] getGoodsByID err: ' + err);
         }
+    },
+    async updateGoods(goods) {
+        try {
+            return await api.UPDATE_GOODS(goods);
+        } catch (err) {
+            console.log('[modules][productions] updateGoods err: ' + err);
+        }
+    },
+    async upload({key, data}) {
+        try {
+            return await api.UPLOAD({key, data});
+        } catch (err) {
+            console.log('[modules][productions] upload err: ' + err);
+        }
     }
 }

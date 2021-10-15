@@ -2,7 +2,7 @@ import layoutHeaderAside from '@/layout/header-aside'
 import routerProductions from './modules/router_productions'
 import routerSales from './modules/router_sales'
 import routerSettings from './modules/router_settings'
-import routerChannels from './modules/router_channels'
+import routerCustomers from './modules/router_customers'
 
 // 由于懒加载页面太多的话会造成webpack热更新太慢，所以开发环境不使用懒加载，只有生产环境使用懒加载
 const _import = require('@/libs/util.import.' + process.env.NODE_ENV)
@@ -56,8 +56,8 @@ const frameIn = [
     routerProductions,
     // 销售中心
     routerSales,
-    // 渠道管理中心
-    routerChannels,
+    // 客户管理中心
+    routerCustomers,
     // 系统设置
     routerSettings
 ]

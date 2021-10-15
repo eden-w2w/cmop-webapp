@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view v-if="isRouterAlive" />
   </div>
 </template>
 
@@ -8,6 +8,16 @@
 import util from '@/libs/util'
 export default {
   name: 'app',
+  data() {
+      return {
+          isRouterAlive: true
+      }
+  },
+  provide () {
+      return {
+          reload: this.reload
+      }
+  },
   watch: {
     '$i18n.locale': 'i18nHandle'
   },
@@ -18,6 +28,12 @@ export default {
     i18nHandle (val, oldVal) {
       util.cookies.set('lang', val)
       document.querySelector('html').setAttribute('lang', val)
+    },
+    reload() {
+        this.isRouterAlive = false;
+        this.$nextTick(function() {
+            this.isRouterAlive = true;
+        });
     }
   }
 }

@@ -19,7 +19,7 @@ export default {
                 title: '订单列表',
                 auth: true
             },
-            component: _import('productions/list')
+            component: _import('sales/list')
         },
         // 销售统计
         {
@@ -29,7 +29,7 @@ export default {
                 title: '销售统计',
                 auth: true
             },
-            component: _import('productions/list')
+            component: _import('sales/statistics')
         }
     ]
 }
