@@ -11,7 +11,6 @@ steps:
   image: node:16-alpine
   pull: always
   commands:
-  - cd cmop-webapp
   - npm install
   when:
     branch:
@@ -27,7 +26,6 @@ steps:
   image: node:16-alpine
   pull: always
   commands:
-  - cd cmop-webapp
   - npm run build
   environment:
     GOENV: PROD
