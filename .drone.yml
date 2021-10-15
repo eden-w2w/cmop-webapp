@@ -1,0 +1,79 @@
+kind: pipeline
+type: docker
+volumes:
+- name: temp
+  temp: {}
+- name: host
+  host:
+    path: /var/run/docker.sock
+steps:
+- name: master_install
+  image: node:16-alpine
+  pull: always
+  commands:
+  - cd cmop-webapp
+  - npm install
+  when:
+    branch:
+      include:
+      - master
+      exclude: []
+  volumes:
+  - name: temp
+    path: /go
+  - name: host
+    path: /var/run/docker.sock
+- name: master_build
+  image: node:16-alpine
+  pull: always
+  commands:
+  - cd cmop-webapp
+  - npm run build
+  environment:
+    GOENV: PROD
+  when:
+    branch:
+      include:
+      - master
+      exclude: []
+  volumes:
+  - name: temp
+    path: /go
+  - name: host
+    path: /var/run/docker.sock
+# - name: master_ship
+#   image: registry.cn-hangzhou.aliyuncs.com/profzone/golang-onship:1.14
+#   pull: always
+#   commands:
+#   - eden ci ship --push
+#   environment:
+#     GOENV: PROD
+#   when:
+#     branch:
+#       include:
+#       - master
+#       exclude: []
+#   volumes:
+#   - name: temp
+#     path: /go
+#   - name: host
+#     path: /var/run/docker.sock
+# - name: master_deploy
+#   image: registry.cn-hangzhou.aliyuncs.com/profzone/golang-ondeploy:2.4.3
+#   pull: always
+#   commands:
+#   - eden ci deploy --env=STAGING
+#   - eden ci deploy --env=TEST
+#   - eden ci deploy --env=DEMO
+#   environment:
+#     GOENV: PROD
+#   when:
+#     branch:
+#       include:
+#       - master
+#       exclude: []
+#   volumes:
+#   - name: temp
+#     path: /go
+#   - name: host
+#     path: /var/run/docker.sock
