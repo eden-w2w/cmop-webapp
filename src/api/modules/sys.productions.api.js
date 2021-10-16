@@ -38,7 +38,15 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
         });
     },
 
-    UPLOAD({key, data}) {
+    CREATE_GOODS(data = { name, comment, dispatchAddr, sales, mainPicture, pictures, specifications, activities, logisticPolicy, price, inventory, detail }) {
+        return request({
+            url: '/v0/goods',
+            method: 'post',
+            data
+        })
+    },
+
+    UPLOAD({ key, data }) {
         return request({
             url: '/v0/upload',
             method: 'post',

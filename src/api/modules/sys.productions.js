@@ -24,6 +24,13 @@ export default {
             console.log('[modules][productions] updateGoods err: ' + err);
         }
     },
+    async createGoods(goods) {
+        try {
+            return await api.CREATE_GOODS(goods);
+        } catch (err) {
+            console.log('[modules][productions] createGoods err: ' + err);
+        }
+    },
     async upload({key, data}) {
         try {
             return await api.UPLOAD({key, data});

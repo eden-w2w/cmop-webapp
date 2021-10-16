@@ -11,39 +11,13 @@
                 <el-input v-model="goods.dispatchAddr"></el-input>
             </el-form-item>
             <el-form-item label="规格" prop="specifications">
-                <el-select
-                    v-model="goods.specifications"
-                    multiple
-                    filterable
-                    allow-create
-                    placeholder="请选择规格"
-                    style="width: 100%"
-                >
-                    <el-option
-                        v-for="spec in specifications"
-                        :key="spec"
-                        :label="spec"
-                        :value="spec"
-                    >
-                    </el-option>
+                <el-select v-model="goods.specifications" multiple filterable allow-create placeholder="请选择规格" style="width: 100%">
+                    <el-option v-for="spec in specifications" :key="spec" :label="spec" :value="spec"> </el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="活动" prop="activities">
-                <el-select
-                    v-model="goods.activities"
-                    multiple
-                    filterable
-                    allow-create
-                    placeholder="请选择活动"
-                    style="width: 100%"
-                >
-                    <el-option
-                        v-for="spec in activities"
-                        :key="spec"
-                        :label="spec"
-                        :value="spec"
-                    >
-                    </el-option>
+                <el-select v-model="goods.activities" multiple filterable allow-create placeholder="请选择活动" style="width: 100%">
+                    <el-option v-for="spec in activities" :key="spec" :label="spec" :value="spec"> </el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="物流政策" prop="logisticPolicy">
@@ -61,50 +35,22 @@
                 </el-input>
             </el-form-item>
             <el-form-item label="主要图片" prop="mainPicture">
-                <el-upload
-                    action=""
-                    class="main-picture-uploader"
-                    :show-file-list="false"
-                    :http-request="onMainPicUploadRequest"
-                >
-                    <el-image
-                        class="main-picture"
-                        fit="cover"
-                        v-if="goods.mainPicture"
-                        :src="goods.mainPicture"
-                        :preview-src-list="[goods.mainPicture]"
-                    >
-                        <div slot="placeholder" class="image-slot">
-                            加载中<span class="dot">...</span>
-                        </div>
+                <el-upload action="" class="main-picture-uploader" :show-file-list="false" :http-request="onMainPicUploadRequest">
+                    <el-image class="main-picture" fit="cover" v-if="goods.mainPicture" :src="goods.mainPicture" :preview-src-list="[goods.mainPicture]">
+                        <div slot="placeholder" class="image-slot">加载中<span class="dot">...</span></div>
                     </el-image>
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
             </el-form-item>
             <el-form-item label="轮播图片" prop="pictures">
-                <el-upload
-                    action=""
-                    list-type="picture-card"
-                    :file-list="goods.pictures"
-                    :http-request="onPicUploadRequest"
-                >
+                <el-upload action="" list-type="picture-card" :file-list="goods.pictures" :http-request="onPicUploadRequest">
                     <i class="el-icon-plus"></i>
                     <div slot="file" slot-scope="{ file }">
-                        <el-image
-                            style="width: 146px; height: 146px"
-                            fit="cover"
-                            :src="file.url"
-                            :preview-src-list="[file.url]"
-                        >
-                            <div slot="placeholder" class="image-slot">
-                                加载中<span class="dot">...</span>
-                            </div>
+                        <el-image style="width: 146px; height: 146px" fit="cover" :src="file.url" :preview-src-list="[file.url]">
+                            <div slot="placeholder" class="image-slot">加载中<span class="dot">...</span></div>
                         </el-image>
                         <span class="el-upload-list__item-actions">
-                            <span
-                                class="el-upload-list__item-delete"
-                                @click="onPictureRemove(file)"
-                            >
+                            <span class="el-upload-list__item-delete" @click="onPictureRemove(file)">
                                 <i class="el-icon-delete"></i>
                             </span>
                         </span>
@@ -122,149 +68,149 @@
 </template>
 
 <script>
-import api from "@/api/modules/sys.productions";
-import format from "@/libs/util.format";
-import { Message } from "element-ui";
-import Schema from "async-validator";
-import Tinymce from "@/components/Tinymce";
+import api from '@/api/modules/sys.productions'
+import format from '@/libs/util.format'
+import { Message } from 'element-ui'
+import Schema from 'async-validator'
+import Tinymce from '@/components/Tinymce'
 import Decimal from 'decimal.js'
 
 export default {
-    name: "productions_detail",
+    name: 'productions_detail',
     data() {
         return {
             rules: {
                 name: [
                     {
                         required: true,
-                        message: "请输入商品名称",
-                        trigger: "blur",
+                        message: '请输入商品名称',
+                        trigger: 'blur'
                     },
                     {
                         min: 3,
                         max: 30,
-                        message: "长度在 3 到 30个字符之间",
-                        trigger: "blur",
-                    },
+                        message: '长度在 3 到 30个字符之间',
+                        trigger: 'blur'
+                    }
                 ],
                 comment: [
                     {
                         max: 255,
-                        message: "长度在 255 个字符以内",
-                        trigger: "blur",
-                    },
+                        message: '长度在 255 个字符以内',
+                        trigger: 'blur'
+                    }
                 ],
                 dispatchAddr: [
                     {
                         required: true,
-                        message: "请输入商品发货地",
-                        trigger: "blur",
+                        message: '请输入商品发货地',
+                        trigger: 'blur'
                     },
                     {
                         min: 2,
                         max: 30,
-                        message: "长度在 2 到 30个字符之间",
-                        trigger: "blur",
-                    },
+                        message: '长度在 2 到 30个字符之间',
+                        trigger: 'blur'
+                    }
                 ],
                 specifications: [
                     {
-                        type: "array",
+                        type: 'array',
                         required: true,
-                        message: "请输入商品规格",
-                        trigger: "blur",
+                        message: '请输入商品规格',
+                        trigger: 'blur'
                     },
                     {
-                        type: "array",
+                        type: 'array',
                         min: 1,
-                        message: "请至少填写 1 项商品规格",
-                        trigger: "blur",
-                    },
+                        message: '请至少填写 1 项商品规格',
+                        trigger: 'blur'
+                    }
                 ],
                 logisticPolicy: [
                     {
                         max: 255,
-                        message: "长度在 255 个字符以内",
-                        trigger: "blur",
-                    },
+                        message: '长度在 255 个字符以内',
+                        trigger: 'blur'
+                    }
                 ],
                 inventory: [
                     {
-                        type: "integer",
+                        type: 'integer',
                         required: true,
-                        message: "请输入商品库存",
-                        trigger: "blur",
+                        message: '请输入商品库存',
+                        trigger: 'blur'
                     },
                     {
-                        type: "integer",
+                        type: 'integer',
                         min: 0,
-                        message: "商品销量必须大于等于 0",
-                        trigger: "blur",
-                    },
+                        message: '商品销量必须大于等于 0',
+                        trigger: 'blur'
+                    }
                 ],
                 sales: [
                     {
-                        type: "integer",
+                        type: 'integer',
                         required: true,
-                        message: "请输入商品销量",
-                        trigger: "blur",
+                        message: '请输入商品销量',
+                        trigger: 'blur',
                         pattern: /^\d+$/
                     },
                     {
-                        type: "integer",
+                        type: 'integer',
                         min: 0,
-                        message: "商品销量必须大于等于 0",
-                        trigger: "blur",
-                    },
+                        message: '商品销量必须大于等于 0',
+                        trigger: 'blur'
+                    }
                 ],
                 price: [
                     {
-                        type: "integer",
+                        type: 'integer',
                         required: true,
-                        trigger: "blur",
-                        message: '请输入合法的金额，例如 150.00',
+                        trigger: 'blur',
+                        message: '请输入合法的金额，例如 150.00'
                     },
                     {
-                        type: "integer",
+                        type: 'integer',
                         min: 1,
-                        message: "金额必须大于 0.01",
-                        trigger: "blur",
-                    },
+                        message: '金额必须大于 0.01',
+                        trigger: 'blur'
+                    }
                 ],
                 mainPicture: [
                     {
-                        type: "url",
+                        type: 'url',
                         required: true,
-                        trigger: "blur",
-                        message: "请输入合法的图片URL地址",
-                    },
+                        trigger: 'blur',
+                        message: '请输入合法的图片URL地址'
+                    }
                 ],
                 pictures: [
                     {
-                        type: "array",
+                        type: 'array',
                         required: true,
-                        message: "请上传商品展示图",
-                        trigger: "blur",
+                        message: '请上传商品展示图',
+                        trigger: 'blur'
                     },
                     {
-                        type: "array",
+                        type: 'array',
                         min: 1,
-                        message: "请至少上传 1 项商品展示图",
-                        trigger: "blur",
-                    },
+                        message: '请至少上传 1 项商品展示图',
+                        trigger: 'blur'
+                    }
                 ],
                 detail: [
                     {
                         required: true,
-                        message: "请填写商品详情",
-                        trigger: "blur",
+                        message: '请填写商品详情',
+                        trigger: 'blur'
                     },
                     {
                         max: 65535,
-                        message: "长度在 65535 个字符以内",
-                        trigger: "blur",
-                    },
-                ],
+                        message: '长度在 65535 个字符以内',
+                        trigger: 'blur'
+                    }
+                ]
             },
             price: 0.0,
             specifications: [],
@@ -282,118 +228,124 @@ export default {
                 pictures: [],
                 price: 0,
                 logisticPolicy: '',
-                detail: '',
-            },
-        };
+                detail: ''
+            }
+        }
     },
     mounted() {
-        const id = this.$route.query.goodsID;
-        if (!id) {
-            // 创建
-        } else {
+        const id = this.$route.query.goodsID
+        if (id) {
             // 更新
-            api.getGoodsByID(id).then((res) => {
-                this.goods = res;
-                this.price = this.formatMoney(this.goods.price / 100);
-                this.specifications = res.specifications;
-                this.activities = res.activities;
-            });
+            api.getGoodsByID(id).then(res => {
+                this.goods = res
+                this.price = this.formatMoney(this.goods.price / 100)
+                this.specifications = res.specifications
+                this.activities = res.activities
+            })
         }
     },
     methods: {
         ...format,
         onSubmit: function () {
-            console.log(this.goods);
-            let $this = this;
-            this.$refs["form"].validate((valid) => {
+            let $this = this
+            this.$refs['form'].validate(valid => {
                 if (valid) {
-                    api.updateGoods($this.goods).then((res) => {
-                        $this.$message({
-                            message: "保存成功",
-                            type: "success",
-                        });
-                    });
+                    if (!$this.goods.goodsID) {
+                        api.createGoods($this.goods).then(res => {
+                            $this.$message({
+                                message: '创建成功',
+                                type: 'success'
+                            })
+                        })
+                    } else {
+                        api.updateGoods($this.goods).then(res => {
+                            $this.$message({
+                                message: '保存成功',
+                                type: 'success'
+                            })
+                        })
+                    }
                 } else {
                     $this.$message({
-                        message: "表单数据不符合规范",
-                        type: "error",
-                    });
+                        message: '表单数据不符合规范',
+                        type: 'error'
+                    })
                 }
-            });
+            })
         },
         onPriceInput: function (val) {
-            let d = new Decimal(val);
-            d = d.mul(new Decimal(100));
-            this.goods.price = d.toNumber();
+            let d = new Decimal(val)
+            d = d.mul(new Decimal(100))
+            this.goods.price = d.toNumber()
         },
         onPictureRemove: function (file) {
             for (let i = 0; i < this.goods.pictures.length; i++) {
-                const v = this.goods.pictures[i];
+                const v = this.goods.pictures[i]
                 if (file.uid == v.uid) {
-                    this.goods.pictures.splice(i, 1);
-                    break;
+                    this.goods.pictures.splice(i, 1)
+                    break
                 }
             }
         },
         onMainPicUploadRequest: function (params) {
-            var reader = new FileReader();
-            let $this = this;
-            reader.readAsDataURL(params.file);
+            var reader = new FileReader()
+            let $this = this
+            reader.readAsDataURL(params.file)
             reader.onload = function () {
-                let flag = "base64,";
-                let i = reader.result.indexOf(flag);
-                let result = reader.result.substr(i + flag.length);
+                let flag = 'base64,'
+                let i = reader.result.indexOf(flag)
+                let result = reader.result.substr(i + flag.length)
                 api.upload({
-                    key: "productions/" + params.file.name,
-                    data: result,
-                }).then((res) => {
-                    $this.goods.mainPicture = res.url;
+                    key: 'productions/' + params.file.name,
+                    data: result
+                }).then(res => {
+                    $this.goods.mainPicture = res.url
                     Message.success({
-                        message: "上传成功",
-                        type: "success",
-                    });
-                });
-            };
+                        message: '上传成功',
+                        type: 'success'
+                    })
+                })
+            }
         },
 
         onPicUploadRequest: function (params) {
-            var reader = new FileReader();
-            let $this = this;
-            reader.readAsDataURL(params.file);
+            var reader = new FileReader()
+            let $this = this
+            reader.readAsDataURL(params.file)
             reader.onload = function () {
-                let flag = "base64,";
-                let i = reader.result.indexOf(flag);
-                let result = reader.result.substr(i + flag.length);
+                let flag = 'base64,'
+                let i = reader.result.indexOf(flag)
+                let result = reader.result.substr(i + flag.length)
                 api.upload({
-                    key: "productions/" + params.file.name,
-                    data: result,
-                }).then((res) => {
-                    let maxI = 0;
+                    key: 'productions/' + params.file.name,
+                    data: result
+                }).then(res => {
+                    let maxI = 0
                     $this.goods.pictures.forEach((v, i) => {
                         if (v.id > maxI) {
-                            maxI = v.id;
+                            maxI = v.id
                         }
-                    });
+                    })
                     $this.goods.pictures.push({
                         id: maxI + 1,
-                        status: "success",
-                        type: "IMAGE",
+                        status: 'success',
+                        type: 'IMAGE',
                         uid: params.file.uid,
-                        url: res.url,
-                    });
+                        url: res.url
+                    })
                     Message.success({
-                        message: "上传成功",
-                        type: "success",
-                    });
-                });
-            };
-        },
+                        message: '上传成功',
+                        type: 'success'
+                    })
+                })
+            }
+        }
     },
     computed: {},
     components: {
-        Tinymce,
-    },
-};
+        Tinymce
+    }
+}
 </script>
 
 <style>
@@ -403,7 +355,7 @@ export default {
     color: #ff0000;
 }
 .money:before {
-    content: "￥";
+    content: '￥';
 }
 .main-picture-uploader .el-upload {
     border: 1px dashed #d9d9d9;
