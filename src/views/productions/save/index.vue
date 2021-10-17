@@ -267,7 +267,7 @@ export default {
                     }
                 } else {
                     $this.$message({
-                        message: '表单数据不符合规范',
+                        message: '表单数据不完整',
                         type: 'error'
                     })
                 }
