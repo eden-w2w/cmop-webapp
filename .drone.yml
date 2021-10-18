@@ -16,10 +16,10 @@ steps:
       - master
       exclude: []
 - name: master_ship
-  image: docker:19.03.12
+  image: registry-vpc.cn-hangzhou.aliyuncs.com/profzone/golang-onship:1.14
   pull: always
   commands:
-  - docker build -t registry.cn-hangzhou.aliyuncs.com/w2wing/cmop-webapp:latest .
+  - eden ci ship --push
   environment:
     GOENV: PROD
   when:

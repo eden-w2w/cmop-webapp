@@ -1,0 +1,6 @@
+from: nginx:alpine
+image: ${PROFZONE_DOCKER_REGISTRY}/${PROJECT_GROUP}/${PROJECT_NAME}:${PROJECT_VERSION}
+env:
+  NODE_ENV: production
+add:
+  build/: /usr/share/nginx/html/
