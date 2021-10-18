@@ -1,0 +1,13 @@
+name: cmop-webapp
+group: w2wing
+owner: eden-w2w
+version: 0.0.0
+description: cmop
+program_language: vue
+workflow:
+  extends: feature-pr
+scripts:
+  build:
+  - npm install
+  - npm run build --dest build
+  test: npm run test
