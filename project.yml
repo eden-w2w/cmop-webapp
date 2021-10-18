@@ -9,5 +9,5 @@ workflow:
 scripts:
   build:
   - npm install
-  - npm run build --dest build
+  - npm run build -- --dest ./build
   test: npm run test
