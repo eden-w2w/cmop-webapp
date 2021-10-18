@@ -30,22 +30,15 @@ steps:
   volumes:
   - name: host
     path: /var/run/docker.sock
-# - name: master_deploy
-#   image: registry.cn-hangzhou.aliyuncs.com/profzone/golang-ondeploy:2.4.3
-#   pull: always
-#   commands:
-#   - eden ci deploy --env=STAGING
-#   - eden ci deploy --env=TEST
-#   - eden ci deploy --env=DEMO
-#   environment:
-#     GOENV: PROD
-#   when:
-#     branch:
-#       include:
-#       - master
-#       exclude: []
-#   volumes:
-#   - name: temp
-#     path: /go
-#   - name: host
-#     path: /var/run/docker.sock
+- name: master_deploy
+  image: registry.cn-hangzhou.aliyuncs.com/profzone/golang-ondeploy:1.0
+  pull: always
+  commands:
+  - eden ci deploy --env=PROD
+  environment:
+    GOENV: PROD
+  when:
+    branch:
+      include:
+      - master
+      exclude: []
