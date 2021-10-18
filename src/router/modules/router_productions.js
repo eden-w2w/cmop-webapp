@@ -21,16 +21,6 @@ export default {
       },
       component: _import('productions/list')
     },
-    // 商品详情
-    {
-      path: 'detail',
-      name: 'productions_detail',
-      meta: {
-        title: '商品详情',
-        auth: true
-      },
-      component: _import('productions/detail')
-    },
     // 创建商品
     {
       path: 'save',

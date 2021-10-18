@@ -60,7 +60,7 @@ export default {
         },
         onTableRowClick(row, col, evt) {
             this.$router.push({
-                path: '/productions/detail',
+                path: '/productions/save',
                 query: {
                     goodsID: row.goodsID
                 }
