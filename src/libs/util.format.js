@@ -101,5 +101,29 @@ export default {
             case 'COMPLETE':
                 return 'success';
         }
-    }
+    },
+    taskFlowStatus: (status) => {
+        switch (status) {
+            case 'CREATED':
+                return '待执行';
+            case 'PROCESS':
+                return '执行中';
+            case 'COMPLETE':
+                return '已完成';
+            case 'FAIL':
+                return '失败';
+        }
+    },
+    taskFlowStatusColor: (status) => {
+        switch (status) {
+            case 'CREATED':
+                return 'info';
+            case 'PROCESS':
+                return 'warning';
+            case 'COMPLETE':
+                return 'success';
+            case 'FAIL':
+                return 'danger';
+        }
+    },
 }

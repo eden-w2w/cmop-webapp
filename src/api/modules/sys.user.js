@@ -47,5 +47,13 @@ export default {
         } catch (err) {
             console.log('[modules][resetPassword] err: ' + err);
         }
+    },
+
+    async getTaskFlows(params = {startTimeGte, startTimeLt, status}) {
+        try {
+            return await api.GET_TASK_FLOWS(params);
+        } catch (err) {
+            console.log('[modules][getTaskFlows] err: ' + err);
+        }
     }
 }

@@ -11,7 +11,7 @@ export default {
         auth: true
     },
     children: [
-        // 订单列表
+        // 管理员列表
         {
             path: 'administrators',
             name: 'settings_administrators',
@@ -20,6 +20,16 @@ export default {
                 auth: true
             },
             component: _import('settings/admins')
+        },
+        // 任务调度列表
+        {
+            path: 'tasks',
+            name: 'settings_tasks',
+            meta: {
+                title: '任务调度列表',
+                auth: true
+            },
+            component: _import('settings/tasks')
         }
     ]
 }

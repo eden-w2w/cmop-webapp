@@ -56,5 +56,13 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
                 password
             }
         })
+    },
+
+    GET_TASK_FLOWS(params = {startTimeGte, startTimeLt, status}) {
+        return request({
+            url: '/v0/task_flows',
+            method: 'get',
+            params
+        })
     }
 })
