@@ -33,7 +33,13 @@
                     <el-link @click="onUserDetail($event, item.row.userID)">{{ item.row.userID }}<i class="el-icon-view el-icon--right"></i></el-link>
                 </template>
             </el-table-column>
+            <el-table-column label="头像">
+                <template slot-scope="item">
+                    <el-avatar :size="50" :src="item.row.avatarUrl"></el-avatar>
+                </template>
+            </el-table-column>
             <el-table-column prop="nickName" label="用户昵称"></el-table-column>
+            <el-table-column prop="mobile" label="手机号"></el-table-column>
             <el-table-column prop="openID" label="微信OpenID"></el-table-column>
             <el-table-column prop="unionID" label="微信UnionID"></el-table-column>
             <el-table-column prop="refererID" label="推荐人">
