@@ -84,19 +84,7 @@
                         v-if="item.row.status != 'DISPATCH' && item.row.status != 'COMPLETE' && item.row.status != 'CLOSED' && item.row.status != 'REFUND'"
                         >编辑订单</el-button
                     >
-                    <el-button type="danger" @click="onCancelOrder($event, item.row.orderID)" v-if="item.row.status == 'CREATED'">取消订单</el-button>
-                    <el-button type="warning" @click="onConfirmOrder($event, item.row.orderID)" v-if="item.row.status == 'PAID'">确认收款</el-button>
-                    <el-button type="success" @click="onDispatchOrder($event, item.row.orderID)" v-if="item.row.status == 'CONFIRM'">发货</el-button>
-                    <el-button type="warning" @click="onCompleteOrder($event, item.row.orderID)" v-if="item.row.status == 'DISPATCH'">确认收货</el-button>
-                    <el-button
-                        type="danger"
-                        @click="onRefundOrder($event, item.row.orderID)"
-                        v-if="item.row.status == 'DISPATCH' || item.row.status == 'COMPLETE'"
-                        >退货</el-button
-                    >
-                    <el-button type="danger" v-if="item.row.status == 'PAID' || item.row.status == 'CONFIRM' || item.row.status == 'REFUND'"
-                        >确认退款</el-button
-                    >
+                    <order-operator style="margin-left:10px" :id="item.row.orderID" :status="item.row.status" :show="true"></order-operator>
                 </template>
             </el-table-column>
             <el-table-column prop="orderID" label="订单编号" width="200"></el-table-column>
@@ -147,22 +135,6 @@
         <div class="pagination">
             <el-pagination layout="prev, pager, next" :page-size="size" :total="total" hide-on-single-page> </el-pagination>
         </div>
-        <el-drawer title="填写物流信息" :visible.sync="showDispatchPanel" direction="rtl" ref="dispatchPanel" size="35%">
-            <div class="dipatch-pannel__content">
-                <el-form :model="dispatchForm">
-                    <el-form-item label="快递公司">
-                        <el-input v-model="dispatchForm.courierCompany"></el-input>
-                    </el-form-item>
-                    <el-form-item label="快递单号">
-                        <el-input v-model="dispatchForm.courierNumber"></el-input>
-                    </el-form-item>
-                </el-form>
-            </div>
-            <div class="dipatch-pannel__footer">
-                <el-button @click="$refs.dispatchPanel.closeDrawer()">取 消</el-button>
-                <el-button type="primary" @click="onDispatchSubmit" :loading="loading">提交</el-button>
-            </div>
-        </el-drawer>
     </d2-container>
 </template>
 
@@ -170,10 +142,12 @@
 import api from '@/api/modules/sys.sales'
 import userApi from '@/api/modules/sys.user'
 import format from '@/libs/util.format'
+import OrderOperator from '@/components/order-operator'
 
 export default {
     name: 'sales_list',
     inject: ['reload'],
+    components: { OrderOperator },
     data() {
         return {
             enums: {},
@@ -187,13 +161,7 @@ export default {
             loading: true,
             listData: [],
             size: 10,
-            total: 0,
-            showDispatchPanel: false,
-            currentOrder: 0,
-            dispatchForm: {
-                courierCompany: '',
-                courierNumber: ''
-            }
+            total: 0
         }
     },
     mounted() {
@@ -293,72 +261,6 @@ export default {
                     orderID
                 }
             })
-        },
-        onCancelOrder(evt, orderID) {
-            let $this = this
-            this.$confirm('此操作将永久取消该订单 (' + orderID + ') 并且无法恢复, 请再次确定已与客户提前沟通，是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                api.cancelOrder(orderID).then(() => {
-                    $this.reload()
-                })
-            })
-        },
-        onConfirmOrder(evt, orderID) {
-            let $this = this
-            this.$confirm('此操作将对订单 (' + orderID + ') 状态标记为 (待发货), 请再次确定已收到客户付款，是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                api.confirmOrder(orderID).then(() => {
-                    $this.reload()
-                })
-            })
-        },
-        onDispatchOrder(evt, orderID) {
-            this.currentOrder = orderID
-            this.showDispatchPanel = true
-        },
-        onDispatchSubmit(evt) {
-            if (!this.currentOrder) {
-                return
-            }
-            let $this = this
-            api.dispatchOrder({
-                orderID: this.currentOrder,
-                courierCompany: this.dispatchForm.courierCompany,
-                courierNumber: this.dispatchForm.courierNumber
-            }).then(() => {
-                $this.$refs.dispatchPanel.closeDrawer()
-                $this.reload()
-            })
-        },
-        onCompleteOrder(evt, orderID) {
-            let $this = this
-            this.$confirm('此操作将对订单 (' + orderID + ') 状态标记为 (已完成), 建议该操作由客户自主完成，请再次确认客户已收到商品，是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                api.completeOrder(orderID).then(() => {
-                    $this.reload()
-                })
-            })
-        },
-        onRefundOrder(evt, orderID) {
-            let $this = this
-            this.$confirm('此操作将对订单 (' + orderID + ') 状态标记为 (退款中), 建议该操作由客户自主发起，请再次确认客户已退货，是否继续?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                api.refundOrder(orderID).then(() => {
-                    $this.reload()
-                })
-            })
         }
     },
     computed: {}
@@ -373,19 +275,5 @@ export default {
 }
 .money:before {
     content: '￥';
-}
-
-.dipatch-pannel__content {
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-}
-
-.dipatch-pannel__footer {
-    display: flex;
-    padding: 20px;
-}
-.dipatch-pannel__footer button {
-    flex: 1;
 }
 </style>

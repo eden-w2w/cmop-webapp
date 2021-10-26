@@ -126,3 +126,20 @@ export default {
     computed: {}
 }
 </script>
+
+
+<style lang="scss" scoped>
+.dipatch-pannel__content {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.dipatch-pannel__footer {
+    display: flex;
+    padding: 20px;
+}
+.dipatch-pannel__footer button {
+    flex: 1;
+}
+</style>

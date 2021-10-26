@@ -41,11 +41,12 @@ export default {
     name: 'productions_list',
     data() {
         return {
-            loading: true,
+            loading: false,
             listData: []
         }
     },
     mounted() {
+        this.loading = true
         api.getGoods().then(res => {
             this.listData = res
             this.loading = false

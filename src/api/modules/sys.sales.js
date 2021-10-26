@@ -2,11 +2,7 @@ import api from '@/api'
 
 export default {
     async enums() {
-        try {
-            return await api.ENUMS();
-        } catch (err) {
-            console.log('[modules][sales] enums err: ' + err);
-        }
+        return await api.ENUMS();
     },
 
     async getOrders({
@@ -14,99 +10,59 @@ export default {
         paymentMethod,
         status,
     }) {
-        try {
-            return await api.GET_ORDERS({ userID, paymentMethod, status });
-        } catch (err) {
-            console.log('[modules][sales] getOrders err: ' + err);
-        }
+        return await api.GET_ORDERS({ userID, paymentMethod, status });
     },
 
     async getOrderByID(orderID) {
-        try {
-            return await api.GET_ORDER(orderID);
-        } catch (err) {
-            console.log('[modules][sales] getOrderByID err: ' + err);
-        }
+        return await api.GET_ORDER(orderID);
     },
 
     async getOrderGoods(orderID) {
-        try {
-            return await api.GET_ORDER_GOODS(orderID);
-        } catch (err) {
-            console.log('[modules][sales] getOrderGoods err: ' + err);
-        }
+        return await api.GET_ORDER_GOODS(orderID);
     },
 
     async getOrderLogistics(orderID) {
-        try {
-            return await api.GET_ORDER_LOGISTICS(orderID);
-        } catch (err) {
-            console.log('[modules][sales] getOrderLogistics err: ' + err);
-        }
+        return await api.GET_ORDER_LOGISTICS(orderID);
     },
 
     async updateOrder(params = { orderID, status, discountAmount, remark, recipients, shippingAddr, mobile, courierCompany, courierNumber, goods: [] }) {
-        try {
-            return await api.UPDATE_ORDER(params);
-        } catch (err) {
-            console.log('[modules][sales] updateOrder err: ' + err);
-        }
+        return await api.UPDATE_ORDER(params);
     },
 
     async cancelOrder(orderID) {
-        try {
-            return await api.CANCEL_ORDER(orderID);
-        } catch (err) {
-            console.log('[modules][sales] cancelOrder err: ' + err);
-        }
+        return await api.CANCEL_ORDER(orderID);
     },
 
     async confirmOrder(orderID) {
-        try {
-            return await api.UPDATE_ORDER({
-                orderID,
-                status: 'CONFIRM',
-            });
-        } catch (err) {
-            console.log('[modules][sales] confirmOrder err: ' + err);
-        }
+        return await api.UPDATE_ORDER({
+            orderID,
+            status: 'CONFIRM',
+        });
     },
 
     async dispatchOrder({ orderID, courierCompany, courierNumber }) {
         if (!orderID || !courierCompany || !courierNumber) {
             return;
         }
-        try {
-            return await api.UPDATE_ORDER({
-                orderID,
-                status: 'DISPATCH',
-                courierCompany,
-                courierNumber
-            });
-        } catch (err) {
-            console.log('[modules][sales] completeOrder err: ' + err);
-        }
+        return await api.UPDATE_ORDER({
+            orderID,
+            status: 'DISPATCH',
+            courierCompany,
+            courierNumber
+        });
     },
 
     async completeOrder(orderID) {
-        try {
-            return await api.UPDATE_ORDER({
-                orderID,
-                status: 'COMPLETE',
-            });
-        } catch (err) {
-            console.log('[modules][sales] completeOrder err: ' + err);
-        }
+        return await api.UPDATE_ORDER({
+            orderID,
+            status: 'COMPLETE',
+        });
     },
 
     async refundOrder(orderID) {
-        try {
-            return await api.UPDATE_ORDER({
-                orderID,
-                status: 'REFUND',
-            });
-        } catch (err) {
-            console.log('[modules][sales] refundOrder err: ' + err);
-        }
+        return await api.UPDATE_ORDER({
+            orderID,
+            status: 'REFUND',
+        });
     }
 }

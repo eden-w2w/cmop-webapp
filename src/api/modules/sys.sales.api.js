@@ -50,7 +50,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
         });
     },
 
-    UPDATE_ORDER({ orderID, status, discountAmount, remark, recipients, shippingAddr, mobile, courierCompany, courierNumber, goods: [] }) {
+    UPDATE_ORDER({ orderID, status, discountAmount, remark, recipients, shippingAddr, mobile, courierCompany, courierNumber, goods }) {
         return request({
             url: '/v0/orders/' + orderID,
             method: 'patch',
