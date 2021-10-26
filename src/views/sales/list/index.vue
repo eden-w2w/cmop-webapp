@@ -4,7 +4,8 @@
             <el-row type="flex" justify="space-between" align="middle">
                 <el-col :span="3">订单列表</el-col>
                 <el-col :span="20" style="text-align: right">
-                    <el-select style="width:300px"
+                    <el-select
+                        style="width: 300px"
                         v-model="search.userID"
                         filterable
                         remote
@@ -16,7 +17,7 @@
                     >
                         <el-option v-for="u in userList" :key="u.userID" :label="u.nickName" :value="u.userID">
                             <span style="float: left">{{ u.nickName }}</span>
-                            <span style="float: right;">
+                            <span style="float: right">
                                 <el-tag size="mini">{{ u.openID }}</el-tag>
                             </span>
                         </el-option>
@@ -29,12 +30,12 @@
                     </el-select>
                 </el-col>
                 <el-col :span="3" style="text-align: right">
-                    <el-button type="primary">创建订单</el-button>
+                    <el-button type="primary" @click="onCreateOrder">创建订单</el-button>
                 </el-col>
             </el-row>
         </template>
         <el-empty v-if="!loading && !listData.length">
-            <el-button type="primary" v-on:click="onCreateGoods">创建订单</el-button>
+            <el-button type="primary" @click="onCreateOrder">创建订单</el-button>
         </el-empty>
         <el-table v-else v-loading="loading" :data="listData" style="width: 100%" stripe ref="table" @expand-change="onTableExpand">
             <el-table-column type="expand">
@@ -171,7 +172,7 @@ import userApi from '@/api/modules/sys.user'
 import format from '@/libs/util.format'
 
 export default {
-    name: 'productions_list',
+    name: 'sales_list',
     inject: ['reload'],
     data() {
         return {
@@ -214,6 +215,11 @@ export default {
     },
     methods: {
         ...format,
+        onCreateOrder() {
+            this.$router.push({
+                path: '/sales/save'
+            })
+        },
         onSearchUserID(query) {
             this.loadingUser = true
             userApi.getUserByKeywords(query).then(res => {
@@ -281,7 +287,12 @@ export default {
             }
         },
         onEditOrder(evt, orderID) {
-            console.log(orderID)
+            this.$router.push({
+                path: '/sales/save',
+                query: {
+                    orderID
+                }
+            })
         },
         onCancelOrder(evt, orderID) {
             let $this = this

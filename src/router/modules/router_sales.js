@@ -21,6 +21,16 @@ export default {
             },
             component: _import('sales/list')
         },
+        // 订单列表
+        {
+            path: 'save',
+            name: 'sales_save',
+            meta: {
+                title: '创建/编辑订单',
+                auth: true
+            },
+            component: _import('sales/save')
+        },
         // 销售统计
         {
             path: 'statistics',

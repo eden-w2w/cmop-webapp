@@ -21,6 +21,14 @@ export default {
         }
     },
 
+    async getOrderByID(orderID) {
+        try {
+            return await api.GET_ORDER(orderID);
+        } catch (err) {
+            console.log('[modules][sales] getOrderByID err: ' + err);
+        }
+    },
+
     async getOrderGoods(orderID) {
         try {
             return await api.GET_ORDER_GOODS(orderID);
@@ -34,6 +42,14 @@ export default {
             return await api.GET_ORDER_LOGISTICS(orderID);
         } catch (err) {
             console.log('[modules][sales] getOrderLogistics err: ' + err);
+        }
+    },
+
+    async updateOrder(params = { orderID, status, discountAmount, remark, recipients, shippingAddr, mobile, courierCompany, courierNumber, goods: [] }) {
+        try {
+            return await api.UPDATE_ORDER(params);
+        } catch (err) {
+            console.log('[modules][sales] updateOrder err: ' + err);
         }
     },
 

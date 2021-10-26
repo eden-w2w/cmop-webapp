@@ -12,6 +12,5 @@ export default {
         //     ])(`${pre}/list`)
         // },
         { path: `${pre}/list`, title: '商品列表', icon: 'plug' },
-        { path: `${pre}/save`, title: '创建/更新商品', icon: 'database' },
     ])('/productions')
 }

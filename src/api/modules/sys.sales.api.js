@@ -22,6 +22,13 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
         });
     },
 
+    GET_ORDER(orderID) {
+        return request({
+            url: '/v0/orders/' + orderID,
+            method: 'get'
+        });
+    },
+
     GET_ORDER_GOODS(orderID) {
         return request({
             url: '/v0/orders/' + orderID + '/goods',
@@ -43,11 +50,11 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
         });
     },
 
-    UPDATE_ORDER({ orderID, status, discountAmount, remark, recipients, shippingAddr, mobile, courierCompany, courierNumber }) {
+    UPDATE_ORDER({ orderID, status, discountAmount, remark, recipients, shippingAddr, mobile, courierCompany, courierNumber, goods: [] }) {
         return request({
             url: '/v0/orders/' + orderID,
             method: 'patch',
-            data: { status, discountAmount, remark, recipients, shippingAddr, mobile, courierCompany, courierNumber }
+            data: { status, discountAmount, remark, recipients, shippingAddr, mobile, courierCompany, courierNumber, goods }
         });
     },
 });
