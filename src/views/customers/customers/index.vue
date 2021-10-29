@@ -50,16 +50,64 @@
                     <span v-else>-</span>
                 </template>
             </el-table-column>
+            <el-table-column label="操作">
+                <template slot-scope="item">
+                    <el-link type="primary" @click="onShippingAddressPanel($event, item.row.userID)">管理收货地址</el-link>
+                </template>
+            </el-table-column>
         </el-table>
         <div class="pagination">
             <el-pagination layout="prev, pager, next" :page-size="size" :total="total" hide-on-single-page> </el-pagination>
         </div>
+        <el-drawer title="收货地址管理" :visible.sync="showPanel" direction="rtl" ref="goodsPanel" size="50%">
+            <div class="goods-pannel__content">
+                <el-empty v-if="!loadingShippingAddr && !shippingList.length"></el-empty>
+                <el-table v-else v-loading="loadingShippingAddr" :data="shippingList" style="width: 100%" stripe>
+                    <el-table-column prop="recipients" label="收件人" width="150"></el-table-column>
+                    <el-table-column prop="mobile" label="联系电话" width="150"></el-table-column>
+                    <el-table-column prop="district" label="省市区"></el-table-column>
+                    <el-table-column prop="address" label="详细地址"></el-table-column>
+                    <el-table-column prop="address" label="操作" width="100">
+                        <template slot-scope="scope">
+                            <el-link type="primary" @click="onUpdateAddress(scope.row)">编辑</el-link> |
+                            <el-link type="danger" @click="onDeleteAddress(scope.row.userID, scope.row.shippingID)">删除</el-link>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <el-button style="margin-top: 20px" type="primary" @click="onShowAddAddress">添加收货地址</el-button>
+            </div>
+        </el-drawer>
+
+        <el-dialog title="收货地址" :visible.sync="showAddAddress" v-if="showAddAddress">
+            <el-form label-position="top" :model="addressForm">
+                <el-form-item label="收件人姓名">
+                    <el-input v-model="addressForm.recipients"></el-input>
+                </el-form-item>
+                <el-form-item label="联系电话">
+                    <el-input v-model="addressForm.mobile"></el-input>
+                </el-form-item>
+                <el-form-item label="省市区">
+                    <el-cascader
+                        style="width: 300px"
+                        v-model="addressForm.districtDisplay"
+                        :props="districtProps"
+                        placeholder="请选择省/市/区/街道"
+                    ></el-cascader>
+                </el-form-item>
+                <el-form-item label="详细地址">
+                    <el-input v-model="addressForm.address"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="showAddAddress = false">取消</el-button>
+                <el-button type="primary" @click="onSaveAddress">确定</el-button>
+            </div>
+        </el-dialog>
     </d2-container>
 </template>
 
 <script>
 import userApi from '@/api/modules/sys.user'
-
 export default {
     name: 'customers_customers',
     inject: ['reload'],
@@ -73,7 +121,43 @@ export default {
             loading: true,
             listData: [],
             total: 0,
-            size: 10
+            size: 10,
+            showPanel: false,
+            loadingShippingAddr: false,
+            shippingList: [],
+            showAddAddress: false,
+            currentUserID: '',
+            addressForm: {
+                userID: '',
+                shippingID: '',
+                recipients: '',
+                mobile: '',
+                districtDisplay: [],
+                district: '',
+                address: ''
+            },
+            districtProps: {
+                lazy: true,
+                lazyLoad(node, resolve) {
+                    const { value } = node
+                    userApi.getDistrict(value).then(res => {
+                        if (res.length > 0) {
+                            let nodes = []
+                            for (const i in res[0].districts) {
+                                let item = {
+                                    value: res[0].districts[i].name,
+                                    label: res[0].districts[i].name
+                                }
+                                if (res[0].districts[i].level == 'street') {
+                                    item.leaf = true
+                                }
+                                nodes.push(item)
+                            }
+                            resolve(nodes)
+                        }
+                    })
+                }
+            }
         }
     },
     mounted() {
@@ -108,10 +192,117 @@ export default {
                     userID
                 }
             })
+        },
+
+        loadShippingAddress(userID) {
+            userApi
+                .getShippingAddress(userID)
+                .then(res => {
+                    this.loadingShippingAddr = false
+                    this.shippingList = res
+                })
+                .catch(() => {})
+        },
+
+        onShippingAddressPanel(evt, userID) {
+            this.currentUserID = userID
+            this.showPanel = true
+            this.loadingShippingAddr = true
+            this.loadShippingAddress(userID)
+        },
+
+        onShowAddAddress() {
+            this.showAddAddress = true
+            this.resetAddressForm()
+        },
+
+        resetAddressForm() {
+            this.addressForm = {
+                userID: this.currentUserID,
+                shippingID: '',
+                recipients: '',
+                mobile: '',
+                districtDisplay: [],
+                district: '',
+                address: ''
+            }
+        },
+
+        onSaveAddress() {
+            if (this.addressForm.districtDisplay.length > 0) {
+                this.addressForm.district = this.addressForm.districtDisplay.join('')
+            }
+            if (this.addressForm.shippingID) {
+                // update
+                userApi
+                    .updateShippingAddress(this.addressForm)
+                    .then(() => {
+                        this.$message({
+                            type: 'success',
+                            message: '保存成功'
+                        })
+                        this.loadShippingAddress(this.addressForm.userID)
+                        this.showAddAddress = false
+                    })
+                    .catch(() => {})
+            } else {
+                // create
+
+                userApi
+                    .createShippingAddress(this.addressForm)
+                    .then(() => {
+                        this.$message({
+                            type: 'success',
+                            message: '创建成功'
+                        })
+                        this.loadShippingAddress(this.addressForm.userID)
+                        this.showAddAddress = false
+                    })
+                    .catch(() => {})
+            }
+        },
+
+        onUpdateAddress(row) {
+            this.showAddAddress = true
+            this.resetAddressForm()
+            this.addressForm = {
+                userID: this.currentUserID,
+                shippingID: row.shippingID,
+                recipients: row.recipients,
+                mobile: row.mobile,
+                districtDisplay: [],
+                district: row.district,
+                address: row.address
+            }
+        },
+
+        onDeleteAddress(userID, shippingID) {
+            console.log(userID, ' ', shippingID)
+            this.$confirm('此操作将永久删除该地址, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            })
+                .then(() => {
+                    userApi
+                        .deleteShippingAddress({ userID, shippingID })
+                        .then(() => {
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功'
+                            })
+                            this.loadShippingAddress(userID)
+                        })
+                        .catch(() => {})
+                })
+                .catch(() => {})
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
+.goods-pannel__content {
+    padding: 20px;
+}
 </style>

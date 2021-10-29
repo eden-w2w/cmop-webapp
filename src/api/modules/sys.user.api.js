@@ -64,5 +64,48 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
             method: 'get',
             params
         })
+    },
+
+    GET_DISTRICT(keyword) {
+        return request({
+            url: '/v0/districts',
+            method: 'get',
+            params: {
+                keyword
+            }
+        })
+    },
+
+    GET_SHIPPING_ADDRESS(userID) {
+        return request({
+            url: '/v0/users/' + userID + '/address',
+            method: 'get'
+        })
+    },
+
+    CREATE_SHIPPING_ADDRESS(data) {
+        const { userID } = data
+        return request({
+            url: '/v0/users/' + userID + '/address',
+            method: 'post',
+            data
+        })
+    },
+
+    UPDATE_SHIPPING_ADDRESS(data) {
+        const { userID, shippingID } = data
+        return request({
+            url: '/v0/users/' + userID + '/address/' + shippingID,
+            method: 'patch',
+            data
+        })
+    },
+
+    DELETE_SHIPPING_ADDRESS(data) {
+        const { userID, shippingID } = data
+        return request({
+            url: '/v0/users/' + userID + '/address/' + shippingID,
+            method: 'delete'
+        })
     }
 })

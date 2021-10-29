@@ -27,5 +27,25 @@ export default {
 
     async getTaskFlows(params = {startTimeGte, startTimeLt, status}) {
         return await api.GET_TASK_FLOWS(params);
+    },
+
+    async getDistrict(keyword) {
+        return await api.GET_DISTRICT(keyword);
+    },
+
+    async getShippingAddress(userID) {
+        return await api.GET_SHIPPING_ADDRESS(userID);
+    },
+
+    async createShippingAddress(data = {userID, recipients, district, address, mobile}) {
+        return await api.CREATE_SHIPPING_ADDRESS(data);
+    },
+
+    async updateShippingAddress(data = {userID, shippingID, recipients, district, address, mobile}) {
+        return await api.UPDATE_SHIPPING_ADDRESS(data);
+    },
+
+    async deleteShippingAddress(data = {userID, shippingID}) {
+        return await api.DELETE_SHIPPING_ADDRESS(data);
     }
 }
