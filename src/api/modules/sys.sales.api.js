@@ -43,6 +43,13 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
         });
     },
 
+    GET_ORDER_PAYMENT(orderID) {
+        return request({
+            url: '/v0/orders/' + orderID + '/payments/complete',
+            method: 'get'
+        });
+    },
+
     CANCEL_ORDER(orderID) {
         return request({
             url: '/v0/orders/' + orderID,

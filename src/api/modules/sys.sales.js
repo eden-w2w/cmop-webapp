@@ -25,6 +25,10 @@ export default {
         return await api.GET_ORDER_LOGISTICS(orderID);
     },
 
+    async getOrderPayment(orderID) {
+        return await api.GET_ORDER_PAYMENT(orderID);
+    },
+
     async updateOrder(params = { orderID, status, discountAmount, remark, recipients, shippingAddr, mobile, courierCompany, courierNumber, goods: [] }) {
         return await api.UPDATE_ORDER(params);
     },

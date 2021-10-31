@@ -71,6 +71,12 @@
                         </el-table-column>
                     </el-table>
 
+                    <div class="sub-title" v-if="item.row.status != 'CREATED'">支付信息</div>
+                    <el-table v-if="item.row.status != 'CREATED'" :v-loading="item.row.isLoadingPayment" :data="item.row.payment" style="width: 100%" :show-header="false" stripe>
+                        <el-table-column prop="key" width="150"></el-table-column>
+                        <el-table-column prop="value"></el-table-column>
+                    </el-table>
+
                     <div class="sub-title">物流信息</div>
                     <el-table :v-loading="item.row.isLoadingLogistics" :data="item.row.logistics" style="width: 100%" :show-header="false" stripe>
                         <el-table-column prop="key" width="150"></el-table-column>
@@ -178,6 +184,8 @@ export default {
                 this.listData[i].goods = []
                 this.listData[i].isLoadingLogistics = true
                 this.listData[i].logistics = []
+                this.listData[i].isLoadingPayment = true
+                this.listData[i].payment = []
             }
         })
     },
@@ -211,6 +219,8 @@ export default {
                     this.listData[i].goods = []
                     this.listData[i].isLoadingLogistics = true
                     this.listData[i].logistics = []
+                    this.listData[i].isLoadingPayment = true
+                    this.listData[i].payment = []
                 }
             })
         },
@@ -252,6 +262,33 @@ export default {
                         }
                     )
                 })
+            }
+            if (row.status != 'CREATED' && row.payment.length == 0) {
+                api.getOrderPayment(row.orderID).then(res => {
+                    row.isLoadingPayment = false
+                    row.payment.push(
+                        {
+                            key: '支付单号',
+                            value: res.flowID
+                        },
+                        {
+                            key: '金额',
+                            value: res.amount
+                        },
+                        {
+                            key: '支付系统流水号',
+                            value: res.remoteFlowID
+                        },
+                        {
+                            key: '支付状态',
+                            value: res.status
+                        },
+                        {
+                            key: '支付时间',
+                            value: res.updatedAt
+                        }
+                    )
+                }).catch(() => {})
             }
         },
         onEditOrder(evt, orderID) {
