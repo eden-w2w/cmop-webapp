@@ -272,20 +272,20 @@ export default {
                             value: res.flowID
                         },
                         {
-                            key: '金额',
-                            value: res.amount
-                        },
-                        {
                             key: '支付系统流水号',
                             value: res.remoteFlowID
                         },
                         {
+                            key: '金额',
+                            value: '￥' + this.formatMoney(res.amount / 100)
+                        },
+                        {
                             key: '支付状态',
-                            value: res.status
+                            value: this.paymentStatus(res.status)
                         },
                         {
                             key: '支付时间',
-                            value: res.updatedAt
+                            value: this.formatDatatime(res.updatedAt)
                         }
                     )
                 }).catch(() => {})

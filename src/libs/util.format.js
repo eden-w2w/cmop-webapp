@@ -86,6 +86,20 @@ export default {
                 return '微信支付';
         }
     },
+    paymentStatus: status => {
+        switch (status) {
+            case 'CREATED':
+                return '未支付';
+            case 'PROCESS':
+                return '处理中';
+            case 'SUCCESS':
+                return '支付成功';
+            case 'FAIL':
+                return '支付失败';
+            case 'CLOSED':
+                return '已关闭';
+        }
+    },
     settlementStatus: status => {
         switch (status) {
             case 'CREATED':
