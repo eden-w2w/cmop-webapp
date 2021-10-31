@@ -224,9 +224,25 @@ export default {
             loadingUser: false,
             enums: {},
             order: {
+                actualAmount: 0,
+                courierCompany: '',
+                courierNumber: '',
+                createdAt: '',
+                discountAmount: 0,
+                expiredAt: '',
+                goods: [],
+                mobile: '',
+                nickName: '',
+                openID: '',
                 orderID: '',
+                paymentMethod: '',
+                recipients: '',
+                remark: '',
+                shippingAddr: '',
                 status: '',
-                goods: []
+                totalPrice: 0,
+                updatedAt: '',
+                userID: ''
             },
             discountAmount: '0.00',
             showGoodsPanel: false,
@@ -243,6 +259,7 @@ export default {
             this.loading = true
             api.getOrderByID(id).then(res => {
                 this.order = res
+                console.log(this.order)
                 this.loading = false
                 this.discountAmount = this.formatMoney(this.order.discountAmount / 100)
                 this.userList.push({
@@ -297,6 +314,7 @@ export default {
             let totalPrice = new Decimal(0)
             for (const i in this.order.goods) {
                 const g = this.order.goods[i]
+                console.log(g)
                 totalPrice = totalPrice.add(new Decimal(g.amount).mul(new Decimal(g.price)))
             }
             this.order.totalPrice = totalPrice.toNumber()
@@ -335,6 +353,7 @@ export default {
         onGoodsClick(row) {
             let g = this.order.goods.find((g, i, goods) => {
                 if (g.goodsID == row.goodsID) {
+                    this.$refs.goodsPanel.closeDrawer()
                     return g
                 }
             })
