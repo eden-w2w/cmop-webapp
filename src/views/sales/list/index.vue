@@ -265,6 +265,9 @@ export default {
             }
             if (row.status != 'CREATED' && row.payment.length == 0) {
                 api.getOrderPayment(row.orderID).then(res => {
+                    if (!res) {
+                        return
+                    }
                     row.isLoadingPayment = false
                     row.payment.push(
                         {
