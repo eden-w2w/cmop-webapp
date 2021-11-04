@@ -11,7 +11,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
         })
     },
 
-    GET_PROMOTION_FLOWS(params = { userID, refererID, paymentFlowID, settlementID, isNotSettlement, createGte, createLt }) {
+    GET_PROMOTION_FLOWS(params = { userID, refererID, paymentFlowID, settlementID, isNotSettlement, createGte, createLt, size, offset }) {
         return request({
             url: '/v0/promotion_flows',
             method: 'get',
@@ -19,7 +19,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
         })
     },
 
-    GET_SETTLEMENT_FLOWS(params = { userID, name, status, createGte, createLt }) {
+    GET_SETTLEMENT_FLOWS(params = { userID, name, status, createGte, createLt, size, offset }) {
         return request({
             url: '/v0/settlements',
             method: 'get',

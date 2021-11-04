@@ -5,11 +5,11 @@ export default {
         return await api.TASK_SETTLEMENTS(name);
     },
 
-    async getPromotionFlows(params = {userID, refererID, paymentFlowID, settlementID, isNotSettlement, createGte, createLt}) {
+    async getPromotionFlows(params) {
         return await api.GET_PROMOTION_FLOWS(params);
     },
 
-    async getSettlementFlows(params = {userID, name, status, createGte, createLt}) {
+    async getSettlementFlows(params) {
         return await api.GET_SETTLEMENT_FLOWS(params);
     },
 

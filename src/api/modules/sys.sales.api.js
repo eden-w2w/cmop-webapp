@@ -6,19 +6,17 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
         });
     },
 
-    GET_ORDERS({
+    GET_ORDERS( params = {
         userID,
         paymentMethod,
         status,
+        size,
+        offset
     }) {
         return request({
             url: '/v0/orders',
             method: 'get',
-            params: {
-                userID,
-                paymentMethod,
-                status,
-            }
+            params
         });
     },
 
@@ -65,7 +63,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
         });
     },
 
-    GET_PAYMENTS(params = {userID, orderID, paymentMethod, status}) {
+    GET_PAYMENTS(params = {userID, orderID, paymentMethod, status, size, offset}) {
         return request({
             url: '/v0/payment_flows',
             method: 'get',

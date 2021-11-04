@@ -72,7 +72,14 @@
                     </el-table>
 
                     <div class="sub-title" v-if="item.row.status != 'CREATED'">支付信息</div>
-                    <el-table v-if="item.row.status != 'CREATED'" :v-loading="item.row.isLoadingPayment" :data="item.row.payment" style="width: 100%" :show-header="false" stripe>
+                    <el-table
+                        v-if="item.row.status != 'CREATED'"
+                        :v-loading="item.row.isLoadingPayment"
+                        :data="item.row.payment"
+                        style="width: 100%"
+                        :show-header="false"
+                        stripe
+                    >
                         <el-table-column prop="key" width="150"></el-table-column>
                         <el-table-column prop="value"></el-table-column>
                     </el-table>
@@ -90,7 +97,7 @@
                         v-if="item.row.status != 'DISPATCH' && item.row.status != 'COMPLETE' && item.row.status != 'CLOSED' && item.row.status != 'REFUND'"
                         >编辑订单</el-button
                     >
-                    <order-operator style="margin-left:10px" :id="item.row.orderID" :status="item.row.status" :show="true"></order-operator>
+                    <order-operator style="margin-left: 10px" :id="item.row.orderID" :status="item.row.status" :show="true"></order-operator>
                 </template>
             </el-table-column>
             <el-table-column prop="orderID" label="订单编号" width="200"></el-table-column>
@@ -139,7 +146,7 @@
             </el-table-column>
         </el-table>
         <div class="pagination">
-            <el-pagination layout="prev, pager, next" :page-size="size" :total="total" hide-on-single-page> </el-pagination>
+            <el-pagination layout="prev, pager, next" :page-size="search.size" :total="total" hide-on-single-page @current-change="onPageChange"></el-pagination>
         </div>
     </d2-container>
 </template>
@@ -160,13 +167,14 @@ export default {
             search: {
                 userID: '',
                 status: '',
-                paymentMethod: ''
+                paymentMethod: '',
+                size: 10,
+                offset: 0
             },
             userList: [],
             loadingUser: false,
             loading: true,
             listData: [],
-            size: 10,
             total: 0
         }
     },
@@ -174,7 +182,7 @@ export default {
         api.enums().then(res => {
             this.enums = res
         })
-        api.getOrders({}).then(res => {
+        api.getOrders(this.search).then(res => {
             this.listData = res.data
             this.total = res.total
             this.loading = false
@@ -205,11 +213,7 @@ export default {
         },
         onSearchSelectChange() {
             this.loading = true
-            api.getOrders({
-                userID: this.search.userID,
-                paymentMethod: this.search.paymentMethod,
-                status: this.search.status
-            }).then(res => {
+            api.getOrders(this.search).then(res => {
                 this.listData = res.data
                 this.total = res.total
                 this.loading = false
@@ -264,34 +268,36 @@ export default {
                 })
             }
             if (row.status != 'CREATED' && row.payment.length == 0) {
-                api.getOrderPayment(row.orderID).then(res => {
-                    if (!res) {
-                        return
-                    }
-                    row.isLoadingPayment = false
-                    row.payment.push(
-                        {
-                            key: '支付单号',
-                            value: res.flowID
-                        },
-                        {
-                            key: '支付系统流水号',
-                            value: res.remoteFlowID
-                        },
-                        {
-                            key: '金额',
-                            value: '￥' + this.formatMoney(res.amount / 100)
-                        },
-                        {
-                            key: '支付状态',
-                            value: this.paymentStatus(res.status)
-                        },
-                        {
-                            key: '支付时间',
-                            value: this.formatDatatime(res.updatedAt)
+                api.getOrderPayment(row.orderID)
+                    .then(res => {
+                        if (!res) {
+                            return
                         }
-                    )
-                }).catch(() => {})
+                        row.isLoadingPayment = false
+                        row.payment.push(
+                            {
+                                key: '支付单号',
+                                value: res.flowID
+                            },
+                            {
+                                key: '支付系统流水号',
+                                value: res.remoteFlowID
+                            },
+                            {
+                                key: '金额',
+                                value: '￥' + this.formatMoney(res.amount / 100)
+                            },
+                            {
+                                key: '支付状态',
+                                value: this.paymentStatus(res.status)
+                            },
+                            {
+                                key: '支付时间',
+                                value: this.formatDatatime(res.updatedAt)
+                            }
+                        )
+                    })
+                    .catch(() => {})
             }
         },
         onEditOrder(evt, orderID) {
@@ -301,6 +307,10 @@ export default {
                     orderID
                 }
             })
+        },
+        onPageChange(pageNo) {
+            this.search.offset = (pageNo - 1) * this.search.size
+            this.onSearchSelectChange()
         }
     },
     computed: {}

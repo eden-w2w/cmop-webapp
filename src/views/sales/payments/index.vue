@@ -119,7 +119,7 @@ export default {
         api.enums().then(res => {
             this.enums = res
         })
-        api.getPaymentFlows({}).then(res => {
+        api.getPaymentFlows(this.search).then(res => {
             this.listData = res.data
             this.total = res.total
             this.loading = false
@@ -143,7 +143,8 @@ export default {
             })
         },
         onPageChange(pageNo) {
-            console.log(pageNo)
+            this.search.offset = (pageNo - 1) * this.search.size
+            this.onSearchSelectChange()
         },
 
         onUserDetail(evt, userID) {

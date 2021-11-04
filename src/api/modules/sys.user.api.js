@@ -25,7 +25,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
         });
     },
 
-    GET_USERS(params = { userID, refererID, userName, mobile, nickName, openID, unionID }) {
+    GET_USERS(params = { userID, refererID, userName, mobile, nickName, openID, unionID, size, offset }) {
         return request({
             url: '/v0/users',
             method: 'get',

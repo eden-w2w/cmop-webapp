@@ -25,6 +25,9 @@
             </el-table-column>
             <el-table-column prop="message" label="任务上报信息"></el-table-column>
         </el-table>
+        <div class="pagination">
+            <el-pagination layout="prev, pager, next" :page-size="search.size" :total="total" hide-on-single-page @current-change="onPageChange"></el-pagination>
+        </div>
     </d2-container>
 </template>
 
@@ -41,11 +44,12 @@ export default {
             search: {
                 startTimeGte: '',
                 startTimeLt: '',
-                status: ''
+                status: '',
+                size: 10,
+                offset: 0
             },
             dataList: [],
-            total: 0,
-            size: 10
+            total: 0
         }
     },
     mounted() {
@@ -61,6 +65,10 @@ export default {
                 this.total = res.total
             })
         },
+        onPageChange(pageNo) {
+            this.search.offset = (pageNo - 1) * this.search.size
+            this.loadingFlows()
+        }
     }
 }
 </script>

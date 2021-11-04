@@ -57,7 +57,7 @@
             </el-table-column>
         </el-table>
         <div class="pagination">
-            <el-pagination layout="prev, pager, next" :page-size="size" :total="total" hide-on-single-page> </el-pagination>
+            <el-pagination layout="prev, pager, next" :page-size="search.size" :total="total" hide-on-single-page @current-change="onPageChange"> </el-pagination>
         </div>
         <el-drawer title="收货地址管理" :visible.sync="showPanel" direction="rtl" ref="goodsPanel" size="50%">
             <div class="goods-pannel__content">
@@ -114,14 +114,15 @@ export default {
     data() {
         return {
             search: {
-                userID: ''
+                userID: '',
+                size: 10,
+                offset: 0
             },
             userList: [],
             loadingUser: false,
             loading: true,
             listData: [],
             total: 0,
-            size: 10,
             showPanel: false,
             loadingShippingAddr: false,
             shippingList: [],
@@ -161,7 +162,7 @@ export default {
         }
     },
     mounted() {
-        userApi.getUsers({}).then(res => {
+        userApi.getUsers(this.search).then(res => {
             this.listData = res.data
             this.total = res.total
             this.loading = false
@@ -183,6 +184,11 @@ export default {
                 this.total = res.total
                 this.loading = false
             })
+        },
+
+        onPageChange(pageNo) {
+            this.search.offset = (pageNo - 1) * this.search.size
+            this.onSearchSelectChange()
         },
 
         onUserDetail(evt, userID) {

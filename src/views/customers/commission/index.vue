@@ -135,7 +135,7 @@
                     </el-table-column>
                 </el-table>
                 <div class="pagination">
-                    <el-pagination layout="prev, pager, next" :page-size="commissionSize" :total="commissionTotal" hide-on-single-page> </el-pagination>
+                    <el-pagination layout="prev, pager, next" :page-size="commissionSearch.size" :total="commissionTotal" hide-on-single-page @current-change="onCommissionPageChange"> </el-pagination>
                 </div>
             </el-tab-pane>
             <el-tab-pane label="结算流水单" name="settlement">
@@ -230,7 +230,7 @@
                     </el-table-column>
                 </el-table>
                 <div class="pagination">
-                    <el-pagination layout="prev, pager, next" :page-size="settlementSize" :total="settlementTotal" hide-on-single-page> </el-pagination>
+                    <el-pagination layout="prev, pager, next" :page-size="settlementSearch.size" :total="settlementTotal" hide-on-single-page @current-change="onSettlementPageChange"> </el-pagination>
                 </div>
             </el-tab-pane>
         </el-tabs>
@@ -257,7 +257,9 @@ export default {
                 settlementID: '',
                 isNotSettlement: '',
                 createGte: '',
-                createLt: ''
+                createLt: '',
+                size: 10,
+                offset: 0
             },
             commissionDateRange: [],
             commissionIsNotSettle: false,
@@ -299,22 +301,22 @@ export default {
             commissionLoading: false,
             commissionList: [],
             commissionTotal: 0,
-            commissionSize: 10,
 
             settlementSearch: {
                 userID: '',
                 name: '',
                 status: '',
                 createGte: '',
-                createLt: ''
+                createLt: '',
+                size: 10,
+                offset: 0
             },
             settlementDateRange: [],
             settlementLoadingUser: false,
             settlementUserList: [],
             settlementLoading: false,
             settlementList: [],
-            settlementTotal: 0,
-            settlementSize: 10
+            settlementTotal: 0
         }
     },
     mounted() {
@@ -392,6 +394,11 @@ export default {
             var newdate = new Date(utcd + localOffset)
             return newdate.toISOString().replace('.000', '')
         },
+        
+        onCommissionPageChange(pageNo) {
+            this.commissionSearch.offset = (pageNo - 1) * this.commissionSearch.size
+            this.onSearchSelectChange()
+        },
 
         onSearchSelectChange() {
             if (this.commissionDateRange.length == 2 && this.commissionDateRange[0] && this.commissionDateRange[1]) {
@@ -407,6 +414,11 @@ export default {
                 this.commissionSearch.isNotSettlement = ''
             }
             this.loadCommission(this.commissionSearch)
+        },
+        
+        onSettlementPageChange(pageNo) {
+            this.settlementSearch.offset = (pageNo - 1) * this.settlementSearch.size
+            this.onSettlementSearchSelectChange()
         },
 
         onSettlementSearchSelectChange() {

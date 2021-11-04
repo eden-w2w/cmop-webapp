@@ -9,7 +9,7 @@ export default {
         return await api.GET_USER_BY_KEYWORD(keywords);
     },
 
-    async getUsers(params = { userID, refererID, userName, mobile, nickName, openID, unionID }) {
+    async getUsers(params) {
         return await api.GET_USERS(params);
     },
 

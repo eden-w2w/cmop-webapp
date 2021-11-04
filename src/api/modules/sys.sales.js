@@ -5,12 +5,8 @@ export default {
         return await api.ENUMS();
     },
 
-    async getOrders({
-        userID,
-        paymentMethod,
-        status,
-    }) {
-        return await api.GET_ORDERS({ userID, paymentMethod, status });
+    async getOrders(params) {
+        return await api.GET_ORDERS(params);
     },
 
     async getOrderByID(orderID) {
