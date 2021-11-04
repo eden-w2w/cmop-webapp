@@ -21,7 +21,7 @@ export default {
             },
             component: _import('sales/list')
         },
-        // 订单列表
+        // 订单保存
         {
             path: 'save',
             name: 'sales_save',
@@ -30,6 +30,16 @@ export default {
                 auth: true
             },
             component: _import('sales/save')
+        },
+        // 支付单列表
+        {
+            path: 'payments',
+            name: 'sales_payments',
+            meta: {
+                title: '支付单列表',
+                auth: true
+            },
+            component: _import('sales/payments')
         },
         // 销售统计
         {

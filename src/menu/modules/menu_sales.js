@@ -1,7 +1,7 @@
 export default {
     path: '/sales',
     title: '销售中心',
-    icon: 'cog',
+    icon: 'balance-scale',
     children: (pre => [
         // {
         //     path: `${pre}/list`,
@@ -11,7 +11,8 @@ export default {
         //         { path: `${pre}/create`, title: '添加商品', icon: 'database' },
         //     ])(`${pre}/list`)
         // },
-        { path: `${pre}/list`, title: '订单列表', icon: 'plug' },
-        { path: `${pre}/statistics`, title: '销售统计', icon: 'database' },
+        { path: `${pre}/list`, title: '订单列表', icon: 'list' },
+        { path: `${pre}/payments`, title: '支付单列表', icon: 'weixin' },
+        { path: `${pre}/statistics`, title: '销售统计', icon: 'pie-chart' },
     ])('/sales')
 }

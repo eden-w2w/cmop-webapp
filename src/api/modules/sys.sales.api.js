@@ -64,4 +64,12 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
             data: { status, discountAmount, remark, recipients, shippingAddr, mobile, courierCompany, courierNumber, goods }
         });
     },
+
+    GET_PAYMENTS(params = {userID, orderID, paymentMethod, status}) {
+        return request({
+            url: '/v0/payment_flows',
+            method: 'get',
+            params
+        });
+    },
 });

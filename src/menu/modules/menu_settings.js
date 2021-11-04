@@ -11,7 +11,7 @@ export default {
         //         { path: `${pre}/create`, title: '添加商品', icon: 'database' },
         //     ])(`${pre}/list`)
         // },
-        { path: `${pre}/administrators`, title: '管理员设置', icon: 'plug' },
-        { path: `${pre}/tasks`, title: '任务调度列表', icon: 'plug' },
+        { path: `${pre}/administrators`, title: '管理员设置', icon: 'user-o' },
+        { path: `${pre}/tasks`, title: '任务调度列表', icon: 'tasks' },
     ])('/settings')
 }

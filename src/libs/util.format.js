@@ -140,4 +140,36 @@ export default {
                 return 'danger';
         }
     },
+    paymentStatus: (status) => {
+        switch (status) {
+            case 'CREATED':
+                return '未支付';
+            case 'PROCESS':
+                return '处理中';
+            case 'SUCCESS':
+                return '支付成功';
+            case 'FAIL':
+                return '支付失败';
+            case 'REFUND':
+                return '转入退款';
+            case 'CLOSED':
+                return '已关闭';
+        }
+    },
+    paymentStatusColor: (status) => {
+        switch (status) {
+            case 'CREATED':
+                return 'info';
+            case 'PROCESS':
+                return '';
+            case 'SUCCESS':
+                return 'success';
+            case 'FAIL':
+                return 'danger';
+            case 'REFUND':
+                return 'warning';
+            case 'CLOSED':
+                return 'danger';
+        }
+    },
 }

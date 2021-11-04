@@ -1,7 +1,7 @@
 export default {
     path: '/productions',
     title: '商品管理中心',
-    icon: 'cog',
+    icon: 'gift',
     children: (pre => [
         // {
         //     path: `${pre}/list`,
@@ -11,6 +11,6 @@ export default {
         //         { path: `${pre}/save`, title: '添加商品', icon: 'database' },
         //     ])(`${pre}/list`)
         // },
-        { path: `${pre}/list`, title: '商品列表', icon: 'plug' },
+        { path: `${pre}/list`, title: '商品列表', icon: 'list' },
     ])('/productions')
 }

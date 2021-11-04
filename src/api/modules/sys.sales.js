@@ -68,5 +68,9 @@ export default {
             orderID,
             status: 'REFUND',
         });
+    },
+
+    async getPaymentFlows(params) {
+        return await api.GET_PAYMENTS(params);
     }
 }

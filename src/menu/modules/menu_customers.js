@@ -1,7 +1,7 @@
 export default {
     path: '/customers',
     title: '客户管理中心',
-    icon: 'cog',
+    icon: 'user-circle',
     children: (pre => [
         // {
         //     path: `${pre}/list`,
@@ -11,7 +11,7 @@ export default {
         //         { path: `${pre}/create`, title: '添加商品', icon: 'database' },
         //     ])(`${pre}/list`)
         // },
-        { path: `${pre}/customers`, title: '客户管理', icon: 'plug' },
-        { path: `${pre}/commission`, title: '佣金管理', icon: 'plug' },
+        { path: `${pre}/customers`, title: '客户管理', icon: 'users' },
+        { path: `${pre}/commission`, title: '佣金管理', icon: 'money' },
     ])('/customers')
 }
