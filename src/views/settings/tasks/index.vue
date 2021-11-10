@@ -30,7 +30,10 @@
             </el-table-column>
             <el-table-column prop="message" label="任务上报信息">
                 <template slot-scope="scope">
-                    <el-popover v-if="scope.row.message != ''" placement="left-start" title="" width="500" trigger="hover" :content="scope.row.message">
+                    <el-popover v-if="scope.row.message != ''" placement="left" title="" width="800" trigger="hover">
+                        <el-main>
+                            <pre>{{scope.row.message}}</pre>
+                        </el-main>
                         <el-link slot="reference">查看信息<i class="el-icon-view el-icon--right"></i></el-link>
                     </el-popover>
                 </template>
