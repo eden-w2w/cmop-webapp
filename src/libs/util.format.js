@@ -172,4 +172,12 @@ export default {
                 return 'danger';
         }
     },
+    taskFlowType: (type) => {
+        switch (type) {
+            case 'SETTLEMENT':
+                return '结算'
+            case 'RECONCILIATION':
+                return '对账'
+        }
+    }
 }

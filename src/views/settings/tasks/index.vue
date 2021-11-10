@@ -8,6 +8,11 @@
         <el-table v-else v-loading="loading" :data="dataList" style="width: 100%" stripe>
             <el-table-column prop="flowID" label="日志ID" width="200"></el-table-column>
             <el-table-column prop="name" label="任务名称"></el-table-column>
+            <el-table-column prop="type" label="类型">
+                <template slot-scope="scope">
+                    <el-tag effect="dark">{{ taskFlowType(scope.row.type) }}</el-tag>
+                </template>
+            </el-table-column>
             <el-table-column label="状态">
                 <template slot-scope="scope">
                     <el-tag :type="taskFlowStatusColor(scope.row.status)" effect="dark">{{ taskFlowStatus(scope.row.status) }}</el-tag>
@@ -23,10 +28,22 @@
                     {{ formatDatatime(scope.row.endedAt) }}
                 </template>
             </el-table-column>
-            <el-table-column prop="message" label="任务上报信息"></el-table-column>
+            <el-table-column prop="message" label="任务上报信息">
+                <template slot-scope="scope">
+                    <el-popover v-if="scope.row.message != ''" placement="left-start" title="" width="500" trigger="hover" :content="scope.row.message">
+                        <el-link slot="reference">查看信息<i class="el-icon-view el-icon--right"></i></el-link>
+                    </el-popover>
+                </template>
+            </el-table-column>
         </el-table>
         <div class="pagination">
-            <el-pagination layout="prev, pager, next" :page-size="search.size" :total="total" hide-on-single-page @current-change="onPageChange"></el-pagination>
+            <el-pagination
+                layout="prev, pager, next"
+                :page-size="search.size"
+                :total="total"
+                hide-on-single-page
+                @current-change="onPageChange"
+            ></el-pagination>
         </div>
     </d2-container>
 </template>
