@@ -40,7 +40,15 @@
         </template>
         <el-empty v-if="!loading && !listData.length"></el-empty>
         <el-table v-else v-loading="loading" :data="listData" style="width: 100%" stripe ref="table">
-            <el-table-column prop="flowID" label="支付单编号" width="200"></el-table-column>
+            <el-table-column prop="flowID" label="支付单编号" width="200">
+                <template slot-scope="scope">
+                    <el-tooltip effect="dark" content="点击复制" placement="top-start">
+                        <el-link v-clipboard="scope.row.flowID" v-clipboard:success="onClipboardSuccess" v-clipboard:error="onClipboardError"
+                            >{{ scope.row.flowID }}<i class="el-icon-document-copy el-icon--right"></i
+                        ></el-link>
+                    </el-tooltip>
+                </template>
+            </el-table-column>
             <el-table-column prop="userID" label="所属用户" width="200">
                 <template slot-scope="item">
                     <el-link @click="onUserDetail($event, item.row.userID)">{{ item.row.userID }}<i class="el-icon-view el-icon--right"></i></el-link>
@@ -76,15 +84,18 @@
                     <el-tag :type="paymentStatusColor(scope.row.status)" effect="dark">{{ paymentStatus(scope.row.status) }}</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column prop="remoteFlowID" label="支付系统交易号"></el-table-column>
+            <el-table-column label="支付系统交易号">
+                <template slot-scope="scope">
+                    <el-tooltip effect="dark" content="点击复制" placement="top-start">
+                        <el-link v-clipboard="scope.row.remoteFlowID" v-clipboard:success="onClipboardSuccess" v-clipboard:error="onClipboardError"
+                            >{{ scope.row.remoteFlowID }}<i class="el-icon-document-copy el-icon--right"></i
+                        ></el-link>
+                    </el-tooltip>
+                </template>
+            </el-table-column>
             <el-table-column prop="createdAt" label="创建时间">
                 <template slot-scope="scope">
                     {{ formatDatatime(scope.row.createdAt) }}
-                </template>
-            </el-table-column>
-            <el-table-column prop="expiredAt" label="超时时间">
-                <template slot-scope="scope">
-                    {{ formatDatatime(scope.row.expiredAt) }}
                 </template>
             </el-table-column>
             <el-table-column prop="updatedAt" label="最后更新时间">
@@ -94,7 +105,8 @@
             </el-table-column>
         </el-table>
         <div class="pagination">
-            <el-pagination layout="prev, pager, next" :page-size="search.size" :total="total" hide-on-single-page @current-change="onPageChange"> </el-pagination>
+            <el-pagination layout="prev, pager, next" :page-size="search.size" :total="total" hide-on-single-page @current-change="onPageChange">
+            </el-pagination>
         </div>
     </d2-container>
 </template>
@@ -137,6 +149,19 @@ export default {
     },
     methods: {
         ...format,
+        onClipboardSuccess({ value, evt }) {
+            this.$notify({
+                title: '已复制',
+                message: value,
+                type: 'success'
+            })
+        },
+        onClipboardError({ value, evt }) {
+            this.$notify.error({
+                title: '复制失败',
+                message: value,
+            })
+        },
         onSearchUserID(query) {
             this.loadingUser = true
             userApi.getUserByKeywords(query).then(res => {

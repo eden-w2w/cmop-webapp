@@ -11062,6 +11062,11 @@
   "resolved" "https://registry.npmjs.org/uuid/-/uuid-3.4.0.tgz"
   "version" "3.4.0"
 
+"v-clipboard@^2.2.3":
+  "integrity" "sha1-9ds9cAQUUEG219BspII23kzuOkE="
+  "resolved" "https://registry.nlark.com/v-clipboard/download/v-clipboard-2.2.3.tgz"
+  "version" "2.2.3"
+
 "v8-compile-cache@^2.0.3":
   "integrity" "sha512-usZBT3PW+LOjM25wbqIlZwPeJV+3OSz3M1k1Ws8snlW39dZyYL9lOGC5FgPVHfk0jKmjiDV8Z0mIbVQPiwFs7g=="
   "resolved" "https://registry.npmjs.org/v8-compile-cache/-/v8-compile-cache-2.1.0.tgz"

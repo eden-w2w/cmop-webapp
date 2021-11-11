@@ -284,8 +284,16 @@ export default {
                                 value: res.remoteFlowID
                             },
                             {
-                                key: '金额',
+                                key: '总金额',
                                 value: '￥' + this.formatMoney(res.amount / 100)
+                            },
+                            {
+                                key: '代金券',
+                                value: '￥' + this.formatMoney(res.discountAmount / 100)
+                            },
+                            {
+                                key: '实际金额',
+                                value: '￥' + this.formatMoney(res.actualAmount / 100)
                             },
                             {
                                 key: '支付状态',
