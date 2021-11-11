@@ -56,17 +56,27 @@
                     <span class="money">{{ formatMoney(scope.row.amount / 100) }}</span>
                 </template>
             </el-table-column>
+            <el-table-column prop="discountAmount" label="优惠券">
+                <template slot-scope="scope">
+                    <span class="money">{{ formatMoney(scope.row.discountAmount / 100) }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="actualAmount" label="实际支付金额">
+                <template slot-scope="scope">
+                    <span class="money">{{ formatMoney(scope.row.actualAmount / 100) }}</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="paymentMethod" label="支付方式">
                 <template slot-scope="scope">
                     <el-tag type="success" effect="dark">{{ paymentMethod(scope.row.paymentMethod) }}</el-tag>
                 </template>
             </el-table-column>
-            <el-table-column prop="remoteFlowID" label="支付系统交易号"></el-table-column>
             <el-table-column prop="status" label="支付状态">
                 <template slot-scope="scope">
                     <el-tag :type="paymentStatusColor(scope.row.status)" effect="dark">{{ paymentStatus(scope.row.status) }}</el-tag>
                 </template>
             </el-table-column>
+            <el-table-column prop="remoteFlowID" label="支付系统交易号"></el-table-column>
             <el-table-column prop="createdAt" label="创建时间">
                 <template slot-scope="scope">
                     {{ formatDatatime(scope.row.createdAt) }}
