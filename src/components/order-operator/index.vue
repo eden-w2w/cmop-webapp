@@ -70,7 +70,7 @@ export default {
         },
         onDrawback(evt, orderID) {
             let $this = this
-            this.$confirm('由于目前系统未对接微信支付退款，此操作将永久取消该订单 (' + orderID + ') 并且无法恢复, 请再次确定已与客户提前沟通，是否继续?', '提示', {
+            this.$confirm('此操作将永久取消该订单 (' + orderID + ') 并且执行退款操作, 请再次确定已与客户提前沟通，是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
