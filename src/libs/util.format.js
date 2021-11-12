@@ -179,5 +179,41 @@ export default {
             case 'RECONCILIATION':
                 return '对账'
         }
+    },
+    refundStatus: (status) => {
+        switch (status) {
+            case 'PROCESSING':
+                return '退款处理中';
+            case 'SUCCESS':
+                return '退款成功';
+            case 'ABNORMAL':
+                return '退款异常';
+            case 'CLOSED':
+                return '退款关闭';
+        }
+    },
+    refundStatusColor: (status) => {
+        switch (status) {
+            case 'PROCESSING':
+                return 'warning';
+            case 'SUCCESS':
+                return 'success';
+            case 'ABNORMAL':
+                return 'danger';
+            case 'CLOSED':
+                return 'danger';
+        }
+    },
+    refundChannel: (channel) => {
+        switch (channel) {
+            case 'ORIGINAL':
+                return '原路退款'
+            case 'BALANCE':
+                return '退款到余额'
+            case 'OTHER_BALANCE':
+                return '原账户异常退到其他余额账户'
+            case 'OTHER_BANKCARD':
+                return '原银行卡异常退到其他银行卡'
+        }
     }
 }

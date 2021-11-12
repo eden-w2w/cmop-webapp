@@ -41,6 +41,16 @@ export default {
             },
             component: _import('sales/payments')
         },
+        // 退款单列表
+        {
+            path: 'refunds',
+            name: 'sales_refunds',
+            meta: {
+                title: '退款单列表',
+                auth: true
+            },
+            component: _import('sales/refunds')
+        },
         // 销售统计
         {
             path: 'statistics',

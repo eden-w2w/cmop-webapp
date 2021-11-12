@@ -70,4 +70,12 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
             params
         });
     },
+
+    GET_REFUNDS(params = {remoteFlowID, paymentFlowID, remotePaymentFlowID, status, size, offset}) {
+        return request({
+            url: '/v0/refund_flows',
+            method: 'get',
+            params
+        })
+    }
 });

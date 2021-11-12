@@ -68,5 +68,9 @@ export default {
 
     async getPaymentFlows(params) {
         return await api.GET_PAYMENTS(params);
+    },
+
+    async getRefundFlows(params) {
+        return await api.GET_REFUNDS(params);
     }
 }

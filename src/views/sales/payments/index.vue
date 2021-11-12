@@ -81,7 +81,8 @@
             </el-table-column>
             <el-table-column prop="status" label="支付状态">
                 <template slot-scope="scope">
-                    <el-tag :type="paymentStatusColor(scope.row.status)" effect="dark">{{ paymentStatus(scope.row.status) }}</el-tag>
+                    <el-tag v-if="scope.row.status != 'REFUND'" :type="paymentStatusColor(scope.row.status)" effect="dark">{{ paymentStatus(scope.row.status) }}</el-tag>
+                    <el-tag v-else :type="paymentStatusColor(scope.row.status)" effect="dark" @click="onOpenRefund(scope.row.flowID)" style="cursor: pointer">{{ paymentStatus(scope.row.status) }}</el-tag>
                 </template>
             </el-table-column>
             <el-table-column label="支付系统交易号">
@@ -149,6 +150,14 @@ export default {
     },
     methods: {
         ...format,
+        onOpenRefund(flowID) {
+            this.$router.push({
+                path: '/sales/refunds',
+                query: {
+                    paymentFlowID: flowID
+                }
+            })
+        },
         onClipboardSuccess({ value, evt }) {
             this.$notify({
                 title: '已复制',
