@@ -11,6 +11,16 @@ export default {
         auth: true
     },
     children: [
+        // 系统配置
+        {
+            path: 'setting',
+            name: 'settings_setting',
+            meta: {
+                title: '系统配置',
+                auth: true
+            },
+            component: _import('settings/setting')
+        },
         // 管理员列表
         {
             path: 'administrators',

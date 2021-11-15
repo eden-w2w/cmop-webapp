@@ -47,5 +47,13 @@ export default {
 
     async deleteShippingAddress(data = {userID, shippingID}) {
         return await api.DELETE_SHIPPING_ADDRESS(data);
+    },
+
+    async getSetting() {
+        return await api.GET_SETTING()
+    },
+
+    async updateSetting(data = { promotionMainPicture }) {
+        return await api.UPDATE_SETTING(data)
     }
 }

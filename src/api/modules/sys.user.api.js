@@ -107,5 +107,20 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
             url: '/v0/users/' + userID + '/address/' + shippingID,
             method: 'delete'
         })
+    },
+
+    GET_SETTING() {
+        return request({
+            url: '/v0/settings',
+            method: 'get'
+        })
+    },
+
+    UPDATE_SETTING(data) {
+        return request({
+            url: '/v0/settings',
+            method: 'patch',
+            data
+        })
     }
 })
