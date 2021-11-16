@@ -3,6 +3,7 @@ import Adapter from 'axios-mock-adapter'
 import { get } from 'lodash'
 import util from '@/libs/util'
 import { errorLog, errorCreate } from './tools'
+import router from '@/router'
 
 /**
  * @description 创建请求实例
@@ -25,10 +26,16 @@ function createService() {
             return response.data
         },
         error => {
-            const { msg, canBeTalkError } = get(error, 'response.data')
+            const { msg, canBeTalkError, key } = get(error, 'response.data')
             if (canBeTalkError !== undefined && canBeTalkError) {
                 error.message = msg
                 errorLog(error)
+
+                if (key == "AdminTokenExpired") {
+                    router.push({
+                        path: '/login'
+                    })
+                }
                 return Promise.reject()
             }
             const status = get(error, 'response.status')
