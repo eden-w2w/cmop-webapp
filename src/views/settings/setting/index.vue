@@ -2,7 +2,7 @@
     <d2-container>
         <template slot="header">系统设置</template>
 
-        <el-form ref="form" :model="setting" :rules="rules" label-width="100px">
+        <el-form ref="form" :model="setting" :rules="rules" label-width="200px">
             <el-form-item label="推荐有礼分享标题图片" prop="promotionMainPicture">
                 <el-upload action="" class="main-picture-uploader" :show-file-list="false" :http-request="onUploadRequest">
                     <el-image
@@ -109,4 +109,32 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.main-picture-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+.main-picture-uploader .el-upload:hover {
+    border-color: #409eff;
+}
+.avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+}
+.main-picture {
+    width: 178px;
+    height: 178px;
+    display: block;
+}
+.el-upload-list--picture-card .el-upload-list__item-actions {
+    width: 50%;
+    left: 50%;
+}
+
 </style>

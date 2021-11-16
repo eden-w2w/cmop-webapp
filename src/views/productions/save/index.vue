@@ -71,7 +71,6 @@
 import api from '@/api/modules/sys.productions'
 import format from '@/libs/util.format'
 import { Message } from 'element-ui'
-import Schema from 'async-validator'
 import Tinymce from '@/components/Tinymce'
 import Decimal from 'decimal.js'
 
@@ -348,7 +347,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .money {
     font-size: 16px;
     font-weight: bold;
