@@ -1,6 +1,6 @@
 <template>
     <d2-container>
-        <el-form ref="form" :model="goods" :rules="rules" label-width="100px">
+        <el-form ref="form" :model="goods" :rules="rules" label-width="200px">
             <el-form-item label="商品名称" prop="name">
                 <el-input v-model="goods.name"></el-input>
             </el-form-item>
@@ -25,6 +25,15 @@
             </el-form-item>
             <el-form-item label="库存" prop="inventory">
                 <el-input v-model.number="goods.inventory"></el-input>
+            </el-form-item>
+            <el-form-item label="库存不足自动开启预售" prop="isAllowBooking">
+                <el-switch v-model="goods.isAllowBooking" active-text="是" inactive-text="否"></el-switch>
+            </el-form-item>
+            <el-form-item label="预计到货时间" prop="eta" v-if="goods.isAllowBooking">
+                <el-date-picker v-model="goods.eta" align="right" type="date" placeholder="选择日期" :picker-options="pickerOptions"> </el-date-picker>
+            </el-form-item>
+            <el-form-item label="预售销量" prop="bookingSales">
+                <el-input v-model.number="goods.bookingSales"></el-input>
             </el-form-item>
             <el-form-item label="当前销量" prop="sales">
                 <el-input v-model.number="goods.sales"></el-input>
@@ -214,6 +223,11 @@ export default {
             price: 0.0,
             specifications: [],
             activities: [],
+            pickerOptions: {
+                disabledDate(time) {
+                    return time.getTime() < Date.now()
+                }
+            },
             goods: {
                 goodsID: '',
                 name: '',
@@ -227,7 +241,10 @@ export default {
                 pictures: [],
                 price: 0,
                 logisticPolicy: '',
-                detail: ''
+                detail: '',
+                isAllowBooking: false,
+                eta: '',
+                bookingSales: 0
             }
         }
     },
@@ -237,6 +254,7 @@ export default {
             // 更新
             api.getGoodsByID(id).then(res => {
                 this.goods = res
+                this.goods.isAllowBookingShadow = res.isAllowBooking
                 this.price = this.formatMoney(this.goods.price / 100)
                 this.specifications = res.specifications
                 this.activities = res.activities

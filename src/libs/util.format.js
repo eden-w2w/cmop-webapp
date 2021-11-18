@@ -215,5 +215,42 @@ export default {
             case 'OTHER_BANKCARD':
                 return '原银行卡异常退到其他银行卡'
         }
-    }
+    },
+
+    bookingStatus: (status) => {
+        switch (status) {
+            case 'READY':
+                return '待开始';
+            case 'PROCESS':
+                return '进行中';
+            case 'COMPLETE':
+                return '已结束';
+        }
+    },
+    bookingStatusColor: (status) => {
+        switch (status) {
+            case 'READY':
+                return 'danger';
+            case 'PROCESS':
+                return 'success';
+            case 'COMPLETE':
+                return 'warning';
+        }
+    },
+    bookingType: (status) => {
+        switch (status) {
+            case 'MANUAL':
+                return '待开始';
+            case 'AUTO':
+                return '进行中';
+        }
+    },
+    bookingTypeColor: (status) => {
+        switch (status) {
+            case 'MANUAL':
+                return 'warning';
+            case 'AUTO':
+                return 'success';
+        }
+    },
 }

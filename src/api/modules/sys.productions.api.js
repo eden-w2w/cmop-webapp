@@ -17,7 +17,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
         });
     },
 
-    UPDATE_GOODS({ goodsID, name, comment, dispatchAddr, sales, mainPicture, pictures, specifications, activities, logisticPolicy, price, inventory, detail }) {
+    UPDATE_GOODS({ goodsID, name, comment, dispatchAddr, sales, mainPicture, pictures, specifications, activities, logisticPolicy, price, inventory, detail, isAllowBooking, eta, bookingSales }) {
         return request({
             url: '/v0/goods/' + goodsID,
             method: 'put',
@@ -34,11 +34,14 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
                 price,
                 inventory,
                 detail,
+                isAllowBooking,
+                eta,
+                bookingSales
             }
         });
     },
 
-    CREATE_GOODS(data = { name, comment, dispatchAddr, sales, mainPicture, pictures, specifications, activities, logisticPolicy, price, inventory, detail }) {
+    CREATE_GOODS(data = { name, comment, dispatchAddr, sales, mainPicture, pictures, specifications, activities, logisticPolicy, price, inventory, detail, isAllowBooking, eta, bookingSales }) {
         return request({
             url: '/v0/goods',
             method: 'post',
