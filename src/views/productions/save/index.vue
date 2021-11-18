@@ -32,9 +32,6 @@
             <el-form-item label="预计到货时间" prop="eta" v-if="goods.isAllowBooking">
                 <el-date-picker v-model="goods.eta" align="right" type="date" placeholder="选择日期" :picker-options="pickerOptions"> </el-date-picker>
             </el-form-item>
-            <el-form-item label="预售销量" prop="bookingSales">
-                <el-input v-model.number="goods.bookingSales"></el-input>
-            </el-form-item>
             <el-form-item label="当前销量" prop="sales">
                 <el-input v-model.number="goods.sales"></el-input>
             </el-form-item>
@@ -243,8 +240,7 @@ export default {
                 logisticPolicy: '',
                 detail: '',
                 isAllowBooking: false,
-                eta: '',
-                bookingSales: 0
+                eta: ''
             }
         }
     },
