@@ -12,6 +12,7 @@ export default {
         //     ])(`${pre}/list`)
         // },
         { path: `${pre}/list`, title: '订单列表', icon: 'list' },
+        { path: `${pre}/bookings`, title: '预售单列表', icon: 'balance-scale' },
         { path: `${pre}/payments`, title: '支付单列表', icon: 'weixin' },
         { path: `${pre}/refunds`, title: '退款单列表', icon: 'weixin' },
         { path: `${pre}/statistics`, title: '销售统计', icon: 'pie-chart' },

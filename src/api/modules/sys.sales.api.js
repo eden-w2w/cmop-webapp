@@ -77,5 +77,13 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
             method: 'get',
             params
         })
+    },
+
+    GET_BOOKING_FLOWS(params = {goodsID, type, status, startTimeBegin, startTimeEnd, endTimeBegin, endTimeEnd}) {
+        return request({
+            url: '/v0/booking_flows',
+            method: 'get',
+            params
+        })
     }
 });

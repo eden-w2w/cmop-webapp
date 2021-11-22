@@ -31,6 +31,16 @@ export default {
             },
             component: _import('sales/save')
         },
+        // 预售单列表
+        {
+            path: 'bookings',
+            name: 'sales_bookings',
+            meta: {
+                title: '预售单列表',
+                auth: true
+            },
+            component: _import('sales/bookings')
+        },
         // 支付单列表
         {
             path: 'payments',

@@ -24,7 +24,7 @@
             </el-table-column>
             <el-table-column prop="bookingFlowID" label="预售单号" width="200">
                 <template slot-scope="item">
-                    <el-link v-if="item.row.bookingFlowID">{{ item.row.bookingFlowID }}<i class="el-icon-view el-icon--right"></i></el-link>
+                    <el-link v-if="item.row.bookingFlowID" @click="onShowBooking(item.row.goodsID)">{{ item.row.bookingFlowID }}<i class="el-icon-view el-icon--right"></i></el-link>
                     <span v-else>-</span>
                 </template>
             </el-table-column>
@@ -90,7 +90,16 @@ export default {
                     goodsID: row.goodsID
                 }
             })
-        }
+        },
+        onShowBooking(goodsID) {
+            this.$router.push({
+                path: '/sales/bookings',
+                query: {
+                    goodsID,
+                    status: 'PROCESS'
+                }
+            })
+        },
     },
     computed: {}
 }

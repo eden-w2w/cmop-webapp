@@ -72,5 +72,9 @@ export default {
 
     async getRefundFlows(params) {
         return await api.GET_REFUNDS(params);
+    },
+
+    async getBookingFlows(params) {
+        return await api.GET_BOOKING_FLOWS(params);
     }
 }

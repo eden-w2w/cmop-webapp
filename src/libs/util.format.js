@@ -240,9 +240,9 @@ export default {
     bookingType: (status) => {
         switch (status) {
             case 'MANUAL':
-                return '待开始';
+                return '手动';
             case 'AUTO':
-                return '进行中';
+                return '自动';
         }
     },
     bookingTypeColor: (status) => {
