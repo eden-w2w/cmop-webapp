@@ -77,6 +77,12 @@
                     <span v-else>-</span>
                 </template>
             </el-table-column>
+            <el-table-column prop="eta" label="预计到货时间">
+                <template slot-scope="scope">
+                    <span v-if="scope.row.eta">{{ formatDatatime(scope.row.eta) }}</span>
+                    <span v-else>-</span>
+                </template>
+            </el-table-column>
         </el-table>
         <div class="pagination">
             <el-pagination
