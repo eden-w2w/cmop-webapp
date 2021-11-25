@@ -530,7 +530,6 @@ export default {
         },
 
         onNextStep: function () {
-            console.log(this.discount)
             if (this.activeStep > 1) {
                 return
             }
@@ -587,7 +586,7 @@ export default {
         onSubmit() {
             if (!this.discount.discountID) {
                 api.createDiscount(this.discount)
-                    .then(res => {
+                    .then(() => {
                         this.$message({
                             message: '创建成功',
                             type: 'success'
@@ -595,8 +594,8 @@ export default {
                     })
                     .catch(() => {})
             } else {
-                api.updateDiscount(this.discount)
-                    .then(res => {
+                api.updateDiscount(this.discount.discountID, this.discount)
+                    .then(() => {
                         this.$message({
                             message: '保存成功',
                             type: 'success'

@@ -110,10 +110,10 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
         })
     },
 
-    UPDATE_DISCOUNT(data = {discountID, name, status, validityStart, validityEnd, userLimit, limit, times, discountLimit, discountRate, multiStepRate, discountAmount, multiStepReduction}) {
+    UPDATE_DISCOUNT(discountID, data = {name, status, validityStart, validityEnd, userLimit, limit, times, discountLimit, discountRate, multiStepRate, discountAmount, multiStepReduction}) {
         return request({
             url: '/v0/discounts/' + discountID,
-            method: 'path',
+            method: 'patch',
             data
         })
     },

@@ -90,8 +90,8 @@ export default {
         return await api.CREATE_DISCOUNT(params);
     },
 
-    async updateDiscount(params) {
-        return await api.UPDATE_DISCOUNT(params);
+    async updateDiscount(id, params) {
+        return await api.UPDATE_DISCOUNT(id, params);
     },
 
     async startDiscount(id) {
