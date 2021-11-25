@@ -172,15 +172,6 @@ export default {
                 this.loading = false
             })
         },
-
-        getLocalISOTime(twDate) {
-            var d = new Date(twDate)
-            var utcd = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds(), d.getMilliseconds())
-
-            let localOffset = d.getTimezoneOffset() * 60000 + 8 * 60 * 60000
-            var newdate = new Date(utcd + localOffset)
-            return newdate.toISOString().replace('.000', '')
-        },
         onShowGoods(goodsID) {
             this.$router.push({
                 path: '/productions/save',

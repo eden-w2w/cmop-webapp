@@ -70,6 +70,26 @@ export default {
                 auth: true
             },
             component: _import('sales/statistics')
+        },
+        // 营销活动列表
+        {
+            path: 'discounts/list',
+            name: 'sales_discount_list',
+            meta: {
+                title: '营销活动列表',
+                auth: true
+            },
+            component: _import('sales/discount_list')
+        },
+        // 创建/更新营销活动
+        {
+            path: 'discounts/save',
+            name: 'sales_discount_save',
+            meta: {
+                title: '创建/更新营销活动',
+                auth: true
+            },
+            component: _import('sales/discount_save')
         }
     ]
 }

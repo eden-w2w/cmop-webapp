@@ -1,5 +1,5 @@
 export default {
-    formatDatatime: (time, format = 'yyyy-MM-dd hh:mm:ss') => {
+    formatDatatime(time, format = 'yyyy-MM-dd hh:mm:ss') {
         let date = new Date(time);
         var o = {
             'y+': date.getFullYear(),
@@ -21,6 +21,14 @@ export default {
             }
         }
         return format;
+    },
+    getLocalISOTime(twDate) {
+        var d = new Date(twDate)
+        var utcd = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), d.getHours(), d.getMinutes(), d.getSeconds(), d.getMilliseconds())
+
+        let localOffset = d.getTimezoneOffset() * 60000 + 8 * 60 * 60000
+        var newdate = new Date(utcd + localOffset)
+        return newdate.toISOString().replace('.000', '')
     },
     formatMoney: (str) => {
         if (!str) {
@@ -251,6 +259,42 @@ export default {
                 return 'warning';
             case 'AUTO':
                 return 'success';
+        }
+    },
+    discountType: (status) => {
+        switch (status) {
+            case 'ALL':
+                return '全场立减';
+            case 'ALL_PERCENT':
+                return '全场折扣';
+        }
+    },
+    discountCal: (status) => {
+        switch (status) {
+            case 'UNIT':
+                return '单价立减';
+            case 'MULTISTEP':
+                return '总价阶梯式立减';
+        }
+    },
+    discountStatus: (status) => {
+        switch (status) {
+            case 'READY':
+                return '就绪';
+            case 'PROCESS':
+                return '进行中';
+            case 'STOP':
+                return '已停止';
+        }
+    },
+    discountStatusColor: (status) => {
+        switch (status) {
+            case 'READY':
+                return '';
+            case 'PROCESS':
+                return 'success';
+            case 'STOP':
+                return 'danger';
         }
     },
 }

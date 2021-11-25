@@ -259,7 +259,6 @@ export default {
             this.loading = true
             api.getOrderByID(id).then(res => {
                 this.order = res
-                console.log(this.order)
                 this.loading = false
                 this.discountAmount = this.formatMoney(this.order.discountAmount / 100)
                 this.userList.push({

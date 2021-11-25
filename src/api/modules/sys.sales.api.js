@@ -85,5 +85,57 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
             method: 'get',
             params
         })
+    },
+
+    GET_DISCOUNTS(params = {type, status, cal, size, offset}) {
+        return request({
+            url: '/v0/discounts',
+            method: 'get',
+            params
+        })
+    },
+
+    GET_DISCOUNT_BY_ID(id) {
+        return request({
+            url: '/v0/discounts/' + id,
+            method: 'get'
+        })
+    },
+
+    CREATE_DISCOUNT(data = {name, type, cal, validityStart, validityEnd, userLimit, limit, discountLimit, discountRate, multiStepRate, discountAmount, multiStepReduction}) {
+        return request({
+            url: '/v0/discounts',
+            method: 'post',
+            data
+        })
+    },
+
+    UPDATE_DISCOUNT(data = {discountID, name, status, validityStart, validityEnd, userLimit, limit, times, discountLimit, discountRate, multiStepRate, discountAmount, multiStepReduction}) {
+        return request({
+            url: '/v0/discounts/' + discountID,
+            method: 'path',
+            data
+        })
+    },
+
+    START_DISCOUNT(id) {
+        return request({
+            url: '/v0/discounts/' + id + '/start',
+            method: 'post'
+        })
+    },
+
+    STOP_DISCOUNT(id) {
+        return request({
+            url: '/v0/discounts/' + id + '/stop',
+            method: 'post'
+        })
+    },
+
+    DELETE_DISCOUNT(id) {
+        return request({
+            url: '/v0/discounts/' + id,
+            method: 'delete'
+        })
     }
 });
