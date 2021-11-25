@@ -15,11 +15,6 @@
                     <el-option v-for="spec in specifications" :key="spec" :label="spec" :value="spec"> </el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="活动" prop="activities">
-                <el-select v-model="goods.activities" multiple filterable allow-create placeholder="请选择活动" style="width: 100%">
-                    <el-option v-for="spec in activities" :key="spec" :label="spec" :value="spec"> </el-option>
-                </el-select>
-            </el-form-item>
             <el-form-item label="物流政策" prop="logisticPolicy">
                 <el-input v-model="goods.logisticPolicy"></el-input>
             </el-form-item>
@@ -219,7 +214,6 @@ export default {
             },
             price: 0.0,
             specifications: [],
-            activities: [],
             pickerOptions: {
                 disabledDate(time) {
                     return time.getTime() < Date.now()
@@ -229,7 +223,6 @@ export default {
                 goodsID: '',
                 name: '',
                 comment: '',
-                activities: [],
                 specifications: [],
                 dispatchAddr: '',
                 inventory: 0,
@@ -253,7 +246,6 @@ export default {
                 this.goods.isAllowBookingShadow = res.isAllowBooking
                 this.price = this.formatMoney(this.goods.price / 100)
                 this.specifications = res.specifications
-                this.activities = res.activities
             })
         }
     },
