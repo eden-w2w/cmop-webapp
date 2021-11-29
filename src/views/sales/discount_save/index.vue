@@ -57,6 +57,11 @@
 
         <div v-if="activeStep === 1">
             <el-form style="margin-top: 50px" ref="form1" :model="discount" :rules="rules1" label-width="150px">
+                <el-form-item v-if="discount.cal == 'UNIT'" label="总价满额单价优惠阈值" prop="minTotalPrice">
+                    <el-input v-model="minTotalPrice" @input="onMinTotalPriceInput">
+                        <template slot="prepend">￥</template>
+                    </el-input>
+                </el-form-item>
                 <el-form-item v-if="discount.type == 'ALL_PERCENT' && discount.cal == 'UNIT'" label="单价折扣比例" prop="discountRate">
                     <el-input-number v-model="discount.discountRate" :min="0.01" :max="1" :step="0.01"></el-input-number>
                 </el-form-item>
@@ -161,7 +166,12 @@
                 </el-descriptions-item>
                 <el-descriptions-item>
                     <template slot="label">优惠金额上限</template>
-                    <span v-if="discount.discountLimit">￥{{ formatMoney(discountLimit) }}元</span>
+                    <span v-if="discount.discountLimit">￥{{ formatMoney(discount.discountLimit / 100) }}元</span>
+                    <span v-else>无上限</span>
+                </el-descriptions-item>
+                <el-descriptions-item v-if="discount.cal == 'UNIT'">
+                    <template slot="label">总价满额单价优惠阈值</template>
+                    <span v-if="discount.minTotalPrice">￥{{ formatMoney(discount.minTotalPrice / 100) }}元</span>
                     <span v-else>无上限</span>
                 </el-descriptions-item>
                 <el-descriptions-item v-if="discount.type == 'ALL_PERCENT' && discount.cal == 'UNIT'">
@@ -176,7 +186,7 @@
                 </el-descriptions-item>
                 <el-descriptions-item v-if="discount.type == 'ALL' && discount.cal == 'UNIT'">
                     <template slot="label">单价立减金额</template>
-                    ￥{{ formatMoney(discountAmount) }}元
+                    ￥{{ formatMoney(discount.discountAmount / 100) }}元
                 </el-descriptions-item>
                 <el-descriptions-item v-if="discount.type == 'ALL' && discount.cal == 'MULTISTEP'">
                     <template slot="label">总价阶梯式立减</template>
@@ -442,13 +452,15 @@ export default {
                 limit: 0,
                 times: 0,
                 discountLimit: 0,
+                minTotalPrice: 0,
                 discountRate: 0.0,
                 multiStepRate: [],
                 discountAmount: 0,
                 multiStepReduction: []
             },
             discountLimit: 0.0,
-            discountAmount: 0.0
+            discountAmount: 0.0,
+            minTotalPrice: 0.0
         }
     },
     mounted() {
@@ -463,6 +475,9 @@ export default {
                 this.discountLimit = new Decimal(res.discountLimit).div(new Decimal(100)).toFixed(2)
                 if (this.discount.discountAmount) {
                     this.discountAmount = new Decimal(res.discountAmount).div(new Decimal(100)).toFixed(2)
+                }
+                if (this.discount.minTotalPrice) {
+                    this.minTotalPrice = new Decimal(res.minTotalPrice).div(new Decimal(100)).toFixed(2)
                 }
                 if (this.discount.multiStepRate) {
                     for (let i = 0; i < this.discount.multiStepRate.length; i++) {
@@ -518,6 +533,12 @@ export default {
             let d = new Decimal(val)
             d = d.mul(new Decimal(100))
             this.discount.discountLimit = d.toNumber()
+        },
+
+        onMinTotalPriceInput: function (val) {
+            let d = new Decimal(val)
+            d = d.mul(new Decimal(100))
+            this.discount.minTotalPrice = d.toNumber()
         },
 
         onMultiPriceChange: function (rule, shadow, origin) {

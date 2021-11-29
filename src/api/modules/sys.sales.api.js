@@ -6,7 +6,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
         });
     },
 
-    GET_ORDERS( params = {
+    GET_ORDERS(params = {
         userID,
         paymentMethod,
         status,
@@ -63,7 +63,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
         });
     },
 
-    GET_PAYMENTS(params = {userID, orderID, paymentMethod, status, size, offset}) {
+    GET_PAYMENTS(params = { userID, orderID, paymentMethod, status, size, offset }) {
         return request({
             url: '/v0/payment_flows',
             method: 'get',
@@ -71,7 +71,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
         });
     },
 
-    GET_REFUNDS(params = {remoteFlowID, paymentFlowID, remotePaymentFlowID, status, size, offset}) {
+    GET_REFUNDS(params = { remoteFlowID, paymentFlowID, remotePaymentFlowID, status, size, offset }) {
         return request({
             url: '/v0/refund_flows',
             method: 'get',
@@ -79,7 +79,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
         })
     },
 
-    GET_BOOKING_FLOWS(params = {goodsID, type, status, startTimeBegin, startTimeEnd, endTimeBegin, endTimeEnd}) {
+    GET_BOOKING_FLOWS(params = { goodsID, type, status, startTimeBegin, startTimeEnd, endTimeBegin, endTimeEnd }) {
         return request({
             url: '/v0/booking_flows',
             method: 'get',
@@ -87,7 +87,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
         })
     },
 
-    GET_DISCOUNTS(params = {type, status, cal, size, offset}) {
+    GET_DISCOUNTS(params = { type, status, cal, size, offset }) {
         return request({
             url: '/v0/discounts',
             method: 'get',
@@ -102,7 +102,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
         })
     },
 
-    CREATE_DISCOUNT(data = {name, type, cal, validityStart, validityEnd, userLimit, limit, discountLimit, discountRate, multiStepRate, discountAmount, multiStepReduction}) {
+    CREATE_DISCOUNT(data = { name, type, cal, validityStart, validityEnd, userLimit, limit, discountLimit, minTotalPrice, discountRate, multiStepRate, discountAmount, multiStepReduction }) {
         return request({
             url: '/v0/discounts',
             method: 'post',
@@ -110,7 +110,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
         })
     },
 
-    UPDATE_DISCOUNT(discountID, data = {name, status, validityStart, validityEnd, userLimit, limit, times, discountLimit, discountRate, multiStepRate, discountAmount, multiStepReduction}) {
+    UPDATE_DISCOUNT(discountID, data = { name, status, validityStart, validityEnd, userLimit, limit, times, discountLimit, minTotalPrice, discountRate, multiStepRate, discountAmount, multiStepReduction }) {
         return request({
             url: '/v0/discounts/' + discountID,
             method: 'patch',
@@ -136,6 +136,43 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
         return request({
             url: '/v0/discounts/' + id,
             method: 'delete'
+        })
+    },
+
+    CREATE_BOOKING_FLOW(data = { goodsID, limit, type, startTime, endTime, eta }) {
+        return request({
+            url: '/v0/booking_flows',
+            method: 'post',
+            data
+        })
+    },
+
+    GET_BOOKING_FLOW_BY_ID(id) {
+        return request({
+            url: '/v0/booking_flows/' + id,
+            method: 'get'
+        })
+    },
+
+    UPDATE_BOOKING_FLOW(id, data = {sales, limit, type, status, startTime, endTime, eta}) {
+        return request({
+            url: '/v0/booking_flows/' + id,
+            method: 'patch',
+            data
+        })
+    },
+
+    START_BOOKING_FLOW(flowID) {
+        return request({
+            url: '/v0/booking_flows/' + flowID + '/start',
+            method: 'patch'
+        })
+    },
+
+    COMPLETE_BOOKING_FLOW(flowID) {
+        return request({
+            url: '/v0/booking_flows/' + flowID + '/complete',
+            method: 'patch'
         })
     }
 });

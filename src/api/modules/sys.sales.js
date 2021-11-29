@@ -104,5 +104,25 @@ export default {
 
     async deleteDiscount(id) {
         return await api.DELETE_DISCOUNT(id);
+    },
+
+    async getBookingFlowByID(id) {
+        return await api.GET_BOOKING_FLOW_BY_ID(id)
+    },
+
+    async updateBookingFlow(id, data) {
+        return await api.UPDATE_BOOKING_FLOW(id, data)
+    },
+
+    async createBookingFlow(data) {
+        return await api.CREATE_BOOKING_FLOW(data);
+    },
+
+    async startBookingFlow(id) {
+        return await api.START_BOOKING_FLOW(id);
+    },
+
+    async completeBookingFlow(id) {
+        return await api.COMPLETE_BOOKING_FLOW(id);
     }
 }
