@@ -275,6 +275,8 @@ export default {
                 return '单价立减';
             case 'MULTISTEP':
                 return '总价阶梯式立减';
+            case 'MULTISTEP_UNIT':
+                return '总价阶梯式单价立减';
         }
     },
     discountStatus: (status) => {

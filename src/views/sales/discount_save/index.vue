@@ -65,7 +65,7 @@
                 <el-form-item v-if="discount.type == 'ALL_PERCENT' && discount.cal == 'UNIT'" label="单价折扣比例" prop="discountRate">
                     <el-input-number v-model="discount.discountRate" :min="0.01" :max="1" :step="0.01"></el-input-number>
                 </el-form-item>
-                <el-form-item v-if="discount.type == 'ALL_PERCENT' && discount.cal == 'MULTISTEP'" label="总价阶梯式折扣" prop="multiStepRate">
+                <el-form-item v-if="discount.type == 'ALL_PERCENT' && (discount.cal == 'MULTISTEP' || discount.cal == 'MULTISTEP_UNIT')" label="总价阶梯式折扣" prop="multiStepRate">
                     <div v-for="step in discount.multiStepRate" :key="step.id" style="margin-bottom: 10px">
                         <el-form inline :model="step">
                             <el-form-item label="最小总价" prop="min">
@@ -97,7 +97,7 @@
                         <template slot="prepend">￥</template>
                     </el-input>
                 </el-form-item>
-                <el-form-item v-if="discount.type == 'ALL' && discount.cal == 'MULTISTEP'" label="总价阶梯式立减" prop="multiStepReduction">
+                <el-form-item v-if="discount.type == 'ALL' && (discount.cal == 'MULTISTEP' || discount.cal == 'MULTISTEP_UNIT')" label="总价阶梯式立减" prop="multiStepReduction">
                     <div v-for="step in discount.multiStepReduction" :key="step.id" style="margin-bottom: 10px">
                         <el-form inline :model="step">
                             <el-form-item label="最小总价" prop="min">
@@ -178,7 +178,7 @@
                     <template slot="label">单价折扣比例</template>
                     {{ discount.discountRate }}
                 </el-descriptions-item>
-                <el-descriptions-item v-if="discount.type == 'ALL_PERCENT' && discount.cal == 'MULTISTEP'">
+                <el-descriptions-item v-if="discount.type == 'ALL_PERCENT' && (discount.cal == 'MULTISTEP' || discount.cal == 'MULTISTEP_UNIT')">
                     <template slot="label">总价阶梯式折扣</template>
                     <div v-for="step in discount.multiStepRate" :key="step.id">
                         ￥{{ formatMoney(step.minShadow) }}元 ~ {{step.noMax ? '无上限' : '￥' + formatMoney(step.maxShadow) + '元'}}，{{ step.rate }}折扣率
@@ -188,7 +188,7 @@
                     <template slot="label">单价立减金额</template>
                     ￥{{ formatMoney(discount.discountAmount / 100) }}元
                 </el-descriptions-item>
-                <el-descriptions-item v-if="discount.type == 'ALL' && discount.cal == 'MULTISTEP'">
+                <el-descriptions-item v-if="discount.type == 'ALL' && (discount.cal == 'MULTISTEP' || discount.cal == 'MULTISTEP_UNIT')">
                     <template slot="label">总价阶梯式立减</template>
                     <div v-for="step in discount.multiStepReduction" :key="step.id">
                         ￥{{ formatMoney(step.minShadow) }}元 ~ {{step.noMax ? '无上限' : '￥' + formatMoney(step.maxShadow) + '元'}}，立减￥{{ formatMoney(step.reductionShadow) }}元
@@ -367,8 +367,6 @@ export default {
                                 max: [
                                     {
                                         type: 'integer',
-                                        required: true,
-                                        min: 1,
                                         message: '请输入合法的最大总价金额，例如 150.00',
                                         trigger: 'blur'
                                     }
