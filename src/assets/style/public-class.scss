@@ -82,6 +82,30 @@ $sizes: (0, 5, 10, 15, 20);
     border-bottom: #eee 2px solid;
 }
 
+.money {
+    font-size: 16px;
+    font-weight: bold;
+    color: #ff0000;
+}
+.money:before {
+    content: '￥';
+}
 .el-table__expanded-cell {
     padding-left: 48px !important;
+}
+
+.pannel__content {
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+    height: 100%;
+}
+.pannel__content form {
+    flex: 1;
+}
+.pannel__footer {
+    display: flex;
+}
+.pannel__footer button {
+    flex: 1;
 }

@@ -57,7 +57,8 @@
             </el-table-column>
         </el-table>
         <div class="pagination">
-            <el-pagination layout="prev, pager, next" :page-size="search.size" :total="total" hide-on-single-page @current-change="onPageChange"> </el-pagination>
+            <el-pagination layout="prev, pager, next" :page-size="search.size" :total="total" hide-on-single-page @current-change="onPageChange">
+            </el-pagination>
         </div>
         <el-drawer title="收货地址管理" :visible.sync="showPanel" direction="rtl" ref="goodsPanel" size="50%">
             <div class="goods-pannel__content">
@@ -65,7 +66,11 @@
                 <el-table v-else v-loading="loadingShippingAddr" :data="shippingList" style="width: 100%" stripe>
                     <el-table-column prop="recipients" label="收件人" width="150"></el-table-column>
                     <el-table-column prop="mobile" label="联系电话" width="150"></el-table-column>
-                    <el-table-column prop="district" label="省市区"></el-table-column>
+                    <el-table-column prop="district" label="省市区">
+                        <template slot-scope="scope">
+                            {{ scope.row.province }} / {{ scope.row.city }} / {{ scope.row.district }} / {{ scope.row.street }}
+                        </template>
+                    </el-table-column>
                     <el-table-column prop="address" label="详细地址"></el-table-column>
                     <el-table-column prop="address" label="操作" width="100">
                         <template slot-scope="scope">
@@ -88,8 +93,9 @@
                 </el-form-item>
                 <el-form-item label="省市区">
                     <el-cascader
+                        ref="addressCascader"
                         style="width: 300px"
-                        v-model="addressForm.districtDisplay"
+                        v-model="districtDisplay"
                         :props="districtProps"
                         placeholder="请选择省/市/区/街道"
                     ></el-cascader>
@@ -133,10 +139,9 @@ export default {
                 shippingID: '',
                 recipients: '',
                 mobile: '',
-                districtDisplay: [],
-                district: '',
                 address: ''
             },
+            districtDisplay: [],
             districtProps: {
                 lazy: true,
                 lazyLoad(node, resolve) {
@@ -146,10 +151,12 @@ export default {
                             let nodes = []
                             for (const i in res[0].districts) {
                                 let item = {
-                                    value: res[0].districts[i].name,
-                                    label: res[0].districts[i].name
+                                    value: res[0].districts[i].adcode,
+                                    label: res[0].districts[i].name,
+                                    leaf: false
                                 }
                                 if (res[0].districts[i].level == 'street') {
+                                    item.value = res[0].districts[i].name
                                     item.leaf = true
                                 }
                                 nodes.push(item)
@@ -228,15 +235,54 @@ export default {
                 shippingID: '',
                 recipients: '',
                 mobile: '',
-                districtDisplay: [],
+                province: '',
+                provinceCode: '',
+                city: '',
+                cityCode: '',
                 district: '',
+                districtCode: '',
+                street: '',
+                streetCode: '',
                 address: ''
             }
+            this.districtDisplay = []
+        },
+
+        retrieveRegions(node, object) {
+            if (!object) {
+                object = new Object()
+            }
+            if (!node) {
+                return object
+            }
+            if (!object.street) {
+                object.street = node.label
+                object.streetCode = node.value
+                return this.retrieveRegions(node.parent, object)
+            }
+            if (!object.district) {
+                object.district = node.label
+                object.districtCode = node.value
+                return this.retrieveRegions(node.parent, object)
+            }
+            if (!object.city) {
+                object.city = node.label
+                object.cityCode = node.value
+                return this.retrieveRegions(node.parent, object)
+            }
+            if (!object.province) {
+                object.province = node.label
+                object.provinceCode = node.value
+                return this.retrieveRegions(node.parent, object)
+            }
+            return object
         },
 
         onSaveAddress() {
-            if (this.addressForm.districtDisplay.length > 0) {
-                this.addressForm.district = this.addressForm.districtDisplay.join('')
+            let node = this.$refs['addressCascader'].getCheckedNodes()
+            if (node.length > 0) {
+                let regions = this.retrieveRegions(node[0], null)
+                this.addressForm = Object.assign(this.addressForm, regions)
             }
             if (this.addressForm.shippingID) {
                 // update
@@ -253,7 +299,6 @@ export default {
                     .catch(() => {})
             } else {
                 // create
-
                 userApi
                     .createShippingAddress(this.addressForm)
                     .then(() => {
@@ -276,8 +321,14 @@ export default {
                 shippingID: row.shippingID,
                 recipients: row.recipients,
                 mobile: row.mobile,
-                districtDisplay: [],
+                province: row.province,
+                provinceCode: row.provinceCode,
+                city: row.city,
+                cityCode: row.cityCode,
                 district: row.district,
+                districtCode: row.districtCode,
+                street: row.street,
+                streetCode: row.streetCode,
                 address: row.address
             }
         },

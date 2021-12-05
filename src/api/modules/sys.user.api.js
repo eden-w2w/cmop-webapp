@@ -76,6 +76,13 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
         })
     },
 
+    GET_DISTRICTS_ALL() {
+        return request({
+            url: '/v0/districts_all',
+            method: 'get'
+        })
+    },
+
     GET_SHIPPING_ADDRESS(userID) {
         return request({
             url: '/v0/users/' + userID + '/address',

@@ -30,6 +30,12 @@ export default {
         var newdate = new Date(utcd + localOffset)
         return newdate.toISOString().replace('.000', '')
     },
+    formatDuration: (duration) => {
+        return duration + '小时'
+    },
+    formatArea(area) {
+        return area.parent ? this.formatArea(area.parent) + ' / ' + area.name : area.name
+    },
     formatMoney: (str) => {
         if (!str) {
             return "0.00";
@@ -297,6 +303,22 @@ export default {
                 return 'success';
             case 'STOP':
                 return 'danger';
+        }
+    },
+    freightCal: (cal) => {
+        switch (cal) {
+            case 'COUNT':
+                return '按数量';
+            case 'WEIGHT':
+                return '按重量';
+        }
+    },
+    freightCalColor: (cal) => {
+        switch (cal) {
+            case 'COUNT':
+                return 'success';
+            case 'WEIGHT':
+                return 'warning';
         }
     },
 }

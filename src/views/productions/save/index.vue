@@ -7,16 +7,33 @@
             <el-form-item label="商品描述" prop="comment">
                 <el-input v-model="goods.comment"></el-input>
             </el-form-item>
-            <el-form-item label="发货地" prop="dispatchAddr">
-                <el-input v-model="goods.dispatchAddr"></el-input>
+            <el-form-item label="运费模板" prop="freightTemplateID">
+                <el-select v-if="templates.length" v-model="goods.freightTemplateID" filterable placeholder="请选择模板" :loading="loadingTemplates">
+                    <el-option v-for="template in templates" :key="template.templateID" :label="template.name" :value="template.templateID"> </el-option>
+                </el-select>
+                <el-link
+                    v-else
+                    type="primary"
+                    @click="
+                        () => {
+                            this.$router.push({
+                                path: '/productions/freight_list',
+                                query: {
+                                    action: 'add_template'
+                                }
+                            })
+                        }
+                    "
+                    >创建运费模板</el-link
+                >
+            </el-form-item>
+            <el-form-item label="单品净重（克）" prop="unitNetWeight">
+                <el-input-number v-model.number="goods.unitNetWeight" :min="0"></el-input-number>
             </el-form-item>
             <el-form-item label="规格" prop="specifications">
                 <el-select v-model="goods.specifications" multiple filterable allow-create placeholder="请选择规格" style="width: 100%">
                     <el-option v-for="spec in specifications" :key="spec" :label="spec" :value="spec"> </el-option>
                 </el-select>
-            </el-form-item>
-            <el-form-item label="物流政策" prop="logisticPolicy">
-                <el-input v-model="goods.logisticPolicy"></el-input>
             </el-form-item>
             <el-form-item label="库存" prop="inventory">
                 <el-input v-model.number="goods.inventory"></el-input>
@@ -100,16 +117,18 @@ export default {
                         trigger: 'blur'
                     }
                 ],
-                dispatchAddr: [
+                freightTemplateID: [
                     {
                         required: true,
-                        message: '请输入商品发货地',
+                        message: '请选择运费模板',
                         trigger: 'blur'
-                    },
+                    }
+                ],
+                unitNetWeight: [
                     {
-                        min: 2,
-                        max: 30,
-                        message: '长度在 2 到 30个字符之间',
+                        type: 'integer',
+                        min: 0,
+                        message: '至少大于 0',
                         trigger: 'blur'
                     }
                 ],
@@ -124,13 +143,6 @@ export default {
                         type: 'array',
                         min: 1,
                         message: '请至少填写 1 项商品规格',
-                        trigger: 'blur'
-                    }
-                ],
-                logisticPolicy: [
-                    {
-                        max: 255,
-                        message: '长度在 255 个字符以内',
                         trigger: 'blur'
                     }
                 ],
@@ -224,20 +236,30 @@ export default {
                 name: '',
                 comment: '',
                 specifications: [],
-                dispatchAddr: '',
+                freightTemplateID: '',
+                unitNetWeight: 0,
                 inventory: 0,
                 sales: 0,
                 mainPicture: '',
                 pictures: [],
                 price: 0,
-                logisticPolicy: '',
                 detail: '',
                 isAllowBooking: false,
                 eta: ''
-            }
+            },
+            loadingTemplates: false,
+            templates: []
         }
     },
     mounted() {
+        this.loadingTemplates = true
+        api.getTemplates({ size: -1 })
+            .then(resp => {
+                this.templates = resp.data
+                this.loadingTemplates = false
+            })
+            .catch(() => {})
+
         const id = this.$route.query.goodsID
         if (id) {
             // 更新

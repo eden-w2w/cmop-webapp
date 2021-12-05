@@ -33,6 +33,28 @@ export default {
         return await api.GET_DISTRICT(keyword);
     },
 
+    async getDistrictsAll() {
+        return await api.GET_DISTRICTS_ALL();
+    },
+
+    resolveDistrictsAll(items) {
+        if (!items || items.length == 0) {
+            return null
+        }
+        let nodes = []
+        items.forEach(item => {
+            const { adcode, name, districts, level } = item
+            let node = {
+                value: adcode,
+                label: name,
+                children: this.resolveDistrictsAll(districts),
+                leaf: level == 'district' ? true : false
+            }
+            nodes.push(node)
+        });
+        return nodes
+    },
+
     async getShippingAddress(userID) {
         return await api.GET_SHIPPING_ADDRESS(userID);
     },

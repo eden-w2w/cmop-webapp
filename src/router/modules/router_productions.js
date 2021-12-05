@@ -30,6 +30,16 @@ export default {
         auth: true
       },
       component: _import('productions/save')
+    },
+    // 运费模板
+    {
+      path: 'freight_list',
+      name: 'productions_freight_list',
+      meta: {
+        title: '运费模板',
+        auth: true
+      },
+      component: _import('productions/freight_list')
     }
   ]
 }
