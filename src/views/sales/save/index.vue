@@ -27,7 +27,14 @@
                 <el-input disabled :value="formatMoney(order.totalPrice / 100)"><template slot="prepend">￥</template></el-input>
             </el-form-item>
             <el-form-item label="优惠金额" prop="discountAmount">
-                <el-input :disabled="isNotModifyAmount" v-model="discountAmount" @input="onDiscountAmountInput"
+                <el-input
+                    :disabled="isNotModifyAmount"
+                    v-model="shadow.discountAmount"
+                    @input="
+                        limitInputPrice($event, shadow, 'discountAmount')
+                        onDiscountAmountInput()
+                        $forceUpdate()
+                    "
                     ><template slot="prepend">￥</template></el-input
                 >
             </el-form-item>
@@ -223,6 +230,9 @@ export default {
             userList: [],
             loadingUser: false,
             enums: {},
+            shadow: {
+                discountAmount: null
+            },
             order: {
                 actualAmount: 0,
                 courierCompany: '',
@@ -244,7 +254,6 @@ export default {
                 updatedAt: '',
                 userID: ''
             },
-            discountAmount: '0.00',
             showGoodsPanel: false,
 
             loadingGoods: false,
@@ -260,7 +269,7 @@ export default {
             api.getOrderByID(id).then(res => {
                 this.order = res
                 this.loading = false
-                this.discountAmount = this.formatMoney(this.order.discountAmount / 100)
+                this.shadow.discountAmount = this.formatMoney(this.order.discountAmount / 100)
                 this.userList.push({
                     userID: res.userID,
                     nickName: res.nickName,
@@ -291,17 +300,17 @@ export default {
             })
         },
 
-        onDiscountAmountInput(val) {
-            let reg = /^\d+(\.\d{1,2})?$/i
-            if (!reg.test(val)) {
+        onDiscountAmountInput() {
+            if (!this.shadow.discountAmount) {
                 return
             }
-            let d = new Decimal(val)
+            let d = new Decimal(this.shadow.discountAmount)
             d = d.mul(new Decimal(100))
-            if (d.toNumber() > this.order.totalPrice) {
-                return
+            let discountAmount = d.toNumber()
+            if (discountAmount > this.order.totalPrice) {
+                discountAmount = this.order.totalPrice
             }
-            this.order.discountAmount = d.toNumber()
+            this.order.discountAmount = discountAmount
             this.order.actualAmount = new Decimal(this.order.totalPrice).sub(new Decimal(this.order.discountAmount)).toNumber()
         },
 

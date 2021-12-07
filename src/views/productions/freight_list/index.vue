@@ -164,7 +164,10 @@
                         <el-input
                             v-model="templateDetail.firstPriceShadow"
                             @change="onTemplatePriceChange(templateDetail, 'firstPriceShadow', 'firstPrice')"
-                            @input="$forceUpdate()"
+                            @input="
+                                limitInputPrice($event, templateDetail, 'firstPriceShadow')
+                                $forceUpdate()
+                            "
                         ></el-input>
                     </el-form-item>
                     <el-form-item v-if="!templateDetail.isFreeFreight" label="每增加">
@@ -174,7 +177,10 @@
                         <el-input
                             v-model="templateDetail.continuePriceShadow"
                             @change="onTemplatePriceChange(templateDetail, 'continuePriceShadow', 'continuePrice')"
-                            @input="$forceUpdate()"
+                            @input="
+                                limitInputPrice($event, templateDetail, 'continuePriceShadow')
+                                $forceUpdate()
+                            "
                         ></el-input>
                     </el-form-item>
                 </el-form>
@@ -213,7 +219,10 @@
                         <el-input
                             v-model="ruleDetail.firstPriceShadow"
                             @change="onTemplatePriceChange(ruleDetail, 'firstPriceShadow', 'firstPrice')"
-                            @input="$forceUpdate()"
+                            @input="
+                                limitInputPrice($event, ruleDetail, 'firstPriceShadow')
+                                $forceUpdate()
+                            "
                         ></el-input>
                     </el-form-item>
                     <el-form-item v-if="!ruleDetail.isFreeFreight" label="每增加">
@@ -223,7 +232,10 @@
                         <el-input
                             v-model="ruleDetail.continuePriceShadow"
                             @change="onTemplatePriceChange(ruleDetail, 'continuePriceShadow', 'continuePrice')"
-                            @input="$forceUpdate()"
+                            @input="
+                                limitInputPrice($event, ruleDetail, 'continuePriceShadow')
+                                $forceUpdate()
+                            "
                         ></el-input>
                     </el-form-item>
                 </el-form>

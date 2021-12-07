@@ -65,11 +65,23 @@
                 <el-form-item v-if="discount.type == 'ALL_PERCENT' && discount.cal == 'UNIT'" label="单价折扣比例" prop="discountRate">
                     <el-input-number v-model="discount.discountRate" :min="0.01" :max="1" :step="0.01"></el-input-number>
                 </el-form-item>
-                <el-form-item v-if="discount.type == 'ALL_PERCENT' && (discount.cal == 'MULTISTEP' || discount.cal == 'MULTISTEP_UNIT')" label="总价阶梯式折扣" prop="multiStepRate">
+                <el-form-item
+                    v-if="discount.type == 'ALL_PERCENT' && (discount.cal == 'MULTISTEP' || discount.cal == 'MULTISTEP_UNIT')"
+                    label="总价阶梯式折扣"
+                    prop="multiStepRate"
+                >
                     <div v-for="step in discount.multiStepRate" :key="step.id" style="margin-bottom: 10px">
                         <el-form inline :model="step">
                             <el-form-item label="最小总价" prop="min">
-                                <el-input v-model.number="step.minShadow" placeholder="最小总价" @change="onMultiPriceChange(step, 'minShadow', 'min')">
+                                <el-input
+                                    v-model="step.minShadow"
+                                    placeholder="最小总价"
+                                    @change="onMultiPriceChange(step, 'minShadow', 'min')"
+                                    @input="
+                                        limitInputPrice($event, step, 'minShadow')
+                                        $forceUpdate()
+                                    "
+                                >
                                     <template slot="prepend">￥</template>
                                 </el-input>
                             </el-form-item>
@@ -77,7 +89,15 @@
                                 <el-switch v-model="step.noMax" active-text="无上限" inactive-text="有上限"> </el-switch>
                             </el-form-item>
                             <el-form-item label="最大总价" prop="max" v-if="!step.noMax">
-                                <el-input v-model.number="step.maxShadow" placeholder="最大总价" @change="onMultiPriceChange(step, 'maxShadow', 'max')">
+                                <el-input
+                                    v-model="step.maxShadow"
+                                    placeholder="最大总价"
+                                    @change="onMultiPriceChange(step, 'maxShadow', 'max')"
+                                    @input="
+                                        limitInputPrice($event, step, 'maxShadow')
+                                        $forceUpdate()
+                                    "
+                                >
                                     <template slot="prepend">￥</template>
                                 </el-input>
                             </el-form-item>
@@ -97,11 +117,23 @@
                         <template slot="prepend">￥</template>
                     </el-input>
                 </el-form-item>
-                <el-form-item v-if="discount.type == 'ALL' && (discount.cal == 'MULTISTEP' || discount.cal == 'MULTISTEP_UNIT')" label="总价阶梯式立减" prop="multiStepReduction">
+                <el-form-item
+                    v-if="discount.type == 'ALL' && (discount.cal == 'MULTISTEP' || discount.cal == 'MULTISTEP_UNIT')"
+                    label="总价阶梯式立减"
+                    prop="multiStepReduction"
+                >
                     <div v-for="step in discount.multiStepReduction" :key="step.id" style="margin-bottom: 10px">
                         <el-form inline :model="step">
                             <el-form-item label="最小总价" prop="min">
-                                <el-input v-model.number="step.minShadow" placeholder="最小总价" @change="onMultiPriceChange(step, 'minShadow', 'min')">
+                                <el-input
+                                    v-model="step.minShadow"
+                                    placeholder="最小总价"
+                                    @change="onMultiPriceChange(step, 'minShadow', 'min')"
+                                    @input="
+                                        limitInputPrice($event, step, 'minShadow')
+                                        $forceUpdate()
+                                    "
+                                >
                                     <template slot="prepend">￥</template>
                                 </el-input>
                             </el-form-item>
@@ -109,12 +141,27 @@
                                 <el-switch v-model="step.noMax" active-text="无上限" inactive-text="有上限"> </el-switch>
                             </el-form-item>
                             <el-form-item label="最大总价" prop="max" v-if="!step.noMax">
-                                <el-input v-model.number="step.maxShadow" placeholder="最大总价" @change="onMultiPriceChange(step, 'maxShadow', 'max')">
+                                <el-input
+                                    v-model="step.maxShadow"
+                                    placeholder="最大总价"
+                                    @change="onMultiPriceChange(step, 'maxShadow', 'max')"
+                                    @input="
+                                        limitInputPrice($event, step, 'maxShadow')
+                                        $forceUpdate()
+                                    "
+                                >
                                     <template slot="prepend">￥</template>
                                 </el-input>
                             </el-form-item>
                             <el-form-item label="立减" prop="reduction">
-                                <el-input v-model.number="step.reductionShadow" @change="onMultiPriceChange(step, 'reductionShadow', 'reduction')">
+                                <el-input
+                                    v-model="step.reductionShadow"
+                                    @change="onMultiPriceChange(step, 'reductionShadow', 'reduction')"
+                                    @input="
+                                        limitInputPrice($event, step, 'reductionShadow')
+                                        $forceUpdate()
+                                    "
+                                >
                                     <template slot="prepend">￥</template>
                                 </el-input>
                             </el-form-item>
@@ -181,7 +228,7 @@
                 <el-descriptions-item v-if="discount.type == 'ALL_PERCENT' && (discount.cal == 'MULTISTEP' || discount.cal == 'MULTISTEP_UNIT')">
                     <template slot="label">总价阶梯式折扣</template>
                     <div v-for="step in discount.multiStepRate" :key="step.id">
-                        ￥{{ formatMoney(step.minShadow) }}元 ~ {{step.noMax ? '无上限' : '￥' + formatMoney(step.maxShadow) + '元'}}，{{ step.rate }}折扣率
+                        ￥{{ formatMoney(step.minShadow) }}元 ~ {{ step.noMax ? '无上限' : '￥' + formatMoney(step.maxShadow) + '元' }}，{{ step.rate }}折扣率
                     </div>
                 </el-descriptions-item>
                 <el-descriptions-item v-if="discount.type == 'ALL' && discount.cal == 'UNIT'">
@@ -191,7 +238,9 @@
                 <el-descriptions-item v-if="discount.type == 'ALL' && (discount.cal == 'MULTISTEP' || discount.cal == 'MULTISTEP_UNIT')">
                     <template slot="label">总价阶梯式立减</template>
                     <div v-for="step in discount.multiStepReduction" :key="step.id">
-                        ￥{{ formatMoney(step.minShadow) }}元 ~ {{step.noMax ? '无上限' : '￥' + formatMoney(step.maxShadow) + '元'}}，立减￥{{ formatMoney(step.reductionShadow) }}元
+                        ￥{{ formatMoney(step.minShadow) }}元 ~ {{ step.noMax ? '无上限' : '￥' + formatMoney(step.maxShadow) + '元' }}，立减￥{{
+                            formatMoney(step.reductionShadow)
+                        }}元
                     </div>
                 </el-descriptions-item>
             </el-descriptions>
@@ -414,8 +463,6 @@ export default {
                                 max: [
                                     {
                                         type: 'integer',
-                                        required: true,
-                                        min: 1,
                                         message: '请输入合法的最大总价金额，例如 150.00',
                                         trigger: 'blur'
                                     }
@@ -575,9 +622,9 @@ export default {
             this.discount.multiStepRate.push({
                 id: v4(),
                 min: 0,
-                minShadow: 0.0,
+                minShadow: null,
                 max: 0,
-                maxShadow: 0.0,
+                maxShadow: null,
                 noMax: false,
                 rate: 0.01
             })
@@ -594,12 +641,12 @@ export default {
             this.discount.multiStepReduction.push({
                 id: v4(),
                 min: 0,
-                minShadow: 0.0,
+                minShadow: null,
                 max: 0,
-                maxShadow: 0.0,
+                maxShadow: null,
                 noMax: false,
-                reduction: 100,
-                reductionShadow: 1
+                reduction: 0,
+                reductionShadow: null
             })
         },
 

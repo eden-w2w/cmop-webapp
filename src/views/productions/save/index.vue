@@ -48,7 +48,14 @@
                 <el-input v-model.number="goods.sales"></el-input>
             </el-form-item>
             <el-form-item label="价格" prop="price">
-                <el-input v-model="price" @input="onPriceInput">
+                <el-input
+                    v-model="shadow.price"
+                    @input="
+                        limitInputPrice($event, shadow, 'price')
+                        $forceUpdate()
+                    "
+                    @change="onPriceChange"
+                >
                     <template slot="prepend">￥</template>
                 </el-input>
             </el-form-item>
@@ -224,12 +231,14 @@ export default {
                     }
                 ]
             },
-            price: 0.0,
             specifications: [],
             pickerOptions: {
                 disabledDate(time) {
                     return time.getTime() < Date.now()
                 }
+            },
+            shadow: {
+                price: null
             },
             goods: {
                 goodsID: '',
@@ -266,7 +275,7 @@ export default {
             api.getGoodsByID(id).then(res => {
                 this.goods = res
                 this.goods.isAllowBookingShadow = res.isAllowBooking
-                this.price = this.formatMoney(this.goods.price / 100)
+                this.shadow.price = this.formatMoney(this.goods.price / 100)
                 this.specifications = res.specifications
             })
         }
@@ -300,7 +309,7 @@ export default {
                 }
             })
         },
-        onPriceInput: function (val) {
+        onPriceChange: function (val) {
             let d = new Decimal(val)
             d = d.mul(new Decimal(100))
             this.goods.price = d.toNumber()
