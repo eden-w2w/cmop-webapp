@@ -25,7 +25,7 @@ export default ({ service, request, serviceForMock, requestForMock, mock, faker,
         });
     },
 
-    CREATE_GOODS(data = { name, comment, freightTemplateID, unitNetWeight, sales, mainPicture, pictures, specifications, activities, logisticPolicy, price, inventory, detail, isAllowBooking, eta, bookingSales }) {
+    CREATE_GOODS(data = { name, comment, freightTemplateID, unitNetWeight, sales, mainPicture, pictures, specifications, activities, logisticPolicy, price, inventory, detail, isAllowBooking, bookingSales }) {
         return request({
             url: '/v0/goods',
             method: 'post',

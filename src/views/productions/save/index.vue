@@ -41,9 +41,6 @@
             <el-form-item label="库存不足自动开启预售" prop="isAllowBooking">
                 <el-switch v-model="goods.isAllowBooking" active-text="是" inactive-text="否"></el-switch>
             </el-form-item>
-            <el-form-item label="预计到货时间" prop="eta" v-if="goods.isAllowBooking">
-                <el-date-picker v-model="goods.eta" align="right" type="date" placeholder="选择日期" :picker-options="pickerOptions"> </el-date-picker>
-            </el-form-item>
             <el-form-item label="当前销量" prop="sales">
                 <el-input v-model.number="goods.sales"></el-input>
             </el-form-item>
@@ -254,7 +251,6 @@ export default {
                 price: 0,
                 detail: '',
                 isAllowBooking: false,
-                eta: ''
             },
             loadingTemplates: false,
             templates: []
