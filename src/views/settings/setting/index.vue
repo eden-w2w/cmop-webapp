@@ -17,6 +17,12 @@
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
             </el-form-item>
+            <el-form-item label="是否启用消息推送" prop="webhookEnabled">
+                <el-switch v-model="setting.webhookEnabled" active-text="启用" inactive-text="禁用"></el-switch>
+            </el-form-item>
+            <el-form-item v-if="setting.webhookEnabled" label="消息推送机器人地址" prop="webhookURL">
+                <el-input v-model="setting.webhookURL" placeholder="请输入地址"></el-input>
+            </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="onSubmit">保存</el-button>
             </el-form-item>
@@ -43,11 +49,20 @@ export default {
                         trigger: 'blur',
                         message: '请输入合法的图片URL地址'
                     }
+                ],
+                webhookURL: [
+                    {
+                        type: 'url',
+                        trigger: 'blur',
+                        message: '请输入合法的URL地址'
+                    }
                 ]
             },
             loading: false,
             setting: {
-                promotionMainPicture: ''
+                promotionMainPicture: '',
+                webhookEnabled: false,
+                webhookURL: '',
             }
         }
     },
@@ -71,17 +86,19 @@ export default {
                 let flag = 'base64,'
                 let i = reader.result.indexOf(flag)
                 let result = reader.result.substr(i + flag.length)
-                prodApi.upload({
-                    key: 'productions/' + params.file.name,
-                    data: result
-                }).then(res => {
-                    console.log(res)
-                    $this.setting.promotionMainPicture = res.url
-                    Message.success({
-                        message: '上传成功',
-                        type: 'success'
+                prodApi
+                    .upload({
+                        key: 'productions/' + params.file.name,
+                        data: result
                     })
-                })
+                    .then(res => {
+                        console.log(res)
+                        $this.setting.promotionMainPicture = res.url
+                        Message.success({
+                            message: '上传成功',
+                            type: 'success'
+                        })
+                    })
             }
         },
 
@@ -136,5 +153,4 @@ export default {
     width: 50%;
     left: 50%;
 }
-
 </style>

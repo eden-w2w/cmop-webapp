@@ -339,7 +339,6 @@ export default {
                 })
             }
         },
-
         onPicUploadRequest: function (params) {
             var reader = new FileReader()
             let $this = this
