@@ -42,12 +42,17 @@
             <el-table-column prop="mobile" label="手机号"></el-table-column>
             <el-table-column prop="openID" label="微信OpenID"></el-table-column>
             <el-table-column prop="unionID" label="微信UnionID"></el-table-column>
-            <el-table-column prop="refererID" label="推荐人">
+            <el-table-column prop="refererID" label="推荐人" width="200">
                 <template slot-scope="item">
                     <el-link v-if="item.row.refererID != '0'" @click="onUserDetail($event, item.row.userID)"
                         >{{ item.row.refererID }}<i class="el-icon-view el-icon--right"></i
                     ></el-link>
                     <span v-else>-</span>
+                </template>
+            </el-table-column>
+            <el-table-column prop="createdAt" label="创建时间">
+                <template slot-scope="scope">
+                    {{ formatDatatime(scope.row.createdAt) }}
                 </template>
             </el-table-column>
             <el-table-column label="操作">
@@ -113,6 +118,7 @@
 </template>
 
 <script>
+import format from '@/libs/util.format'
 import userApi from '@/api/modules/sys.user'
 export default {
     name: 'customers_customers',
@@ -176,6 +182,7 @@ export default {
         })
     },
     methods: {
+        ...format,
         onSearchUserID(query) {
             this.loadingUser = true
             userApi.getUserByKeywords(query).then(res => {
