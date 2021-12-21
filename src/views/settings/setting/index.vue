@@ -17,6 +17,9 @@
                     <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
             </el-form-item>
+            <el-form-item label="客服热线" prop="servicePhone">
+                <el-input v-model="setting.servicePhone" placeholder="请输入有效电话号码" style="width:300px"></el-input>
+            </el-form-item>
             <el-form-item label="是否启用消息推送" prop="webhookEnabled">
                 <el-switch v-model="setting.webhookEnabled" active-text="启用" inactive-text="禁用"></el-switch>
             </el-form-item>
@@ -48,6 +51,13 @@ export default {
                         required: true,
                         trigger: 'blur',
                         message: '请输入合法的图片URL地址'
+                    }
+                ],
+                servicePhone: [
+                    {
+                        required: true,
+                        trigger: 'blur',
+                        message: '请输入合法的联系电话，区号请不要加 "-"'
                     }
                 ],
                 webhookURL: [
